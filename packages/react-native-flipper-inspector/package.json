@@ -1,0 +1,117 @@
+{
+  "name": "react-native-flipper-inspector",
+  "version": "1.0.0",
+  "description": "Production-ready React Native debugging toolkit with professional API monitoring overlay",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./overlay": {
+      "types": "./dist/overlay/index.d.ts",
+      "import": "./dist/overlay/index.mjs",
+      "require": "./dist/overlay/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "android",
+    "ios",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
+    "postpack": "npm run clean",
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push && git push --tags",
+    "publish:patch": "npm version patch && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:major": "npm version major && npm publish",
+    "publish:beta": "npm version prerelease --preid=beta && npm publish --tag beta",
+    "publish:alpha": "npm version prerelease --preid=alpha && npm publish --tag alpha"
+  },
+  "keywords": [
+    "react-native",
+    "flipper",
+    "debugging",
+    "inspector",
+    "devtools",
+    "logging",
+    "metrics",
+    "tracing",
+    "api-monitoring",
+    "network-debugging",
+    "overlay",
+    "floating-button",
+    "json-highlighting",
+    "curl-generation",
+    "request-response",
+    "developer-tools",
+    "mobile-debugging"
+  ],
+  "author": {
+    "name": "Md Khokanuzzaman Khokan",
+    "email": "khokanuzzmankhokan@gmail.com",
+    "url": "https://github.com/khokanuzzman"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.71.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native-flipper": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.55",
+    "@types/react-native": "^0.72.8",
+    "@vitest/coverage-v8": "^1.2.2",
+    "jsdom": "^27.0.0",
+    "react": "^18.2.0",
+    "react-native": "^0.73.2",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.2"
+  },
+  "dependencies": {
+    "react-native-flipper": "^0.212.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/khokanuzzman/react-native-flipper-inspector.git",
+    "directory": "packages/react-native-flipper-inspector"
+  },
+  "bugs": {
+    "url": "https://github.com/khokanuzzman/react-native-flipper-inspector/issues"
+  },
+  "homepage": "https://github.com/khokanuzzman/react-native-flipper-inspector#readme",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/khokanuzzman"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

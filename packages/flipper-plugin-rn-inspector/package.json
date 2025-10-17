@@ -1,0 +1,53 @@
+{
+  "name": "flipper-plugin-rn-inspector",
+  "version": "1.0.0",
+  "description": "Flipper desktop plugin for React Native Flipper Inspector",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "webpack --mode=production",
+    "dev": "webpack --mode=development --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "flipper",
+    "react-native",
+    "debugging",
+    "devtools",
+    "plugin"
+  ],
+  "author": "React Native Flipper Inspector Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "css-loader": "^6.10.0",
+    "eslint": "^8.57.0",
+    "flipper-plugin": "^0.212.0",
+    "html-webpack-plugin": "^5.6.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "style-loader": "^3.3.4",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "zustand": "^5.0.8"
+  },
+  "dependencies": {
+    "flipper-plugin": "^0.212.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/react-native-flipper-inspector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/react-native-flipper-inspector/issues"
+  },
+  "homepage": "https://github.com/your-org/react-native-flipper-inspector#readme"
+}
