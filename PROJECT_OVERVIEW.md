@@ -160,17 +160,12 @@ We support developers who want to contribute to the project:
    - Benefits: Badge, priority support, feature influence
    - URL: https://github.com/sponsors/khokanuzzman
 
-2. **Buy Me a Coffee** - One-time donations
-   - Quick support with messages
-   - Recognition as supporter
-   - URL: https://buymeacoffee.com/khokanuzzman
-
-3. **Ko-fi** - Flexible support platform
+2. **Ko-fi** - Flexible support platform
    - Choose your amount
    - Updates & exclusive content
    - URL: https://ko-fi.com/khokanuzzman
 
-4. **Open Collective** - Transparent community funding
+3. **Open Collective** - Transparent community funding
    - See exactly where money goes
    - Backer recognition
    - URL: https://opencollective.com/react-native-flipper-inspector

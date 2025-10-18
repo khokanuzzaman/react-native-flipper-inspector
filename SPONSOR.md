@@ -18,15 +18,6 @@ Your support helps us:
 
 ### 💰 One-Time Donations
 
-#### ☕ Buy Me a Coffee
-Quick and easy one-time support!
-
-**[Support with Buy Me a Coffee →](https://buymeacoffee.com/khokanuzzman)**
-
-- 💬 Leave a message with your support
-- 🎁 Get recognized as a supporter
-- ⚡ Help fund development
-
 #### 🎨 Ko-fi
 Support with flexible amounts
 
