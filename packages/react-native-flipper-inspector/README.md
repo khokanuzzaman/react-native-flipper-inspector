@@ -1,35 +1,50 @@
 # React Native Flipper Inspector
 
-[![npm version](https://badge.fury.io/js/react-native-flipper-inspector.svg)](https://badge.fury.io/js/react-native-flipper-inspector)
+[![npm version](https://badge.fury.io/js/react-native-flipper-inspector.svg)](https://www.npmjs.com/package/react-native-flipper-inspector)
+[![npm downloads](https://img.shields.io/npm/dm/react-native-flipper-inspector.svg)](https://www.npmjs.com/package/react-native-flipper-inspector)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 
-A production-ready React Native debugging toolkit with professional API monitoring overlay, designed for seamless integration with Flipper.
+**Professional Network Debugging & API Monitoring for React Native** 🚀
 
-## ✨ Features
+A production-ready React Native debugging toolkit with professional API monitoring overlay, designed for seamless integration with Flipper. Monitor network requests, inspect API calls, track state changes, and debug with ease.
 
-### 🎯 Core Debugging APIs
-- **📝 Logging**: Structured logging with levels and tags
-- **🚨 Error Tracking**: Comprehensive error capture and reporting
-- **📊 Metrics**: Custom metrics with timing and counters
-- **🗂️ State Management**: Key-value state tracking and updates
-- **⏱️ Tracing**: Performance tracing with start/end markers
+**Latest Version**: `v1.0.6` | **Status**: ✅ Production Ready
 
-### 🔍 Professional API Inspector Overlay
-- **📱 Floating Button**: Always-accessible monitoring interface
-- **🎨 Modern UI**: Professional design with gradients and cards
-- **🔍 Real-time Search**: Search through API calls, headers, and responses
-- **🌈 JSON Highlighting**: Beautiful syntax highlighting with dark theme
-- **📋 Copy Features**: One-click copying of cURL, endpoints, headers, and raw data
-- **🔗 Long Press Copy**: Direct text copying from any content area
+## ✨ Key Features
 
-### 🚀 Advanced Features
-- **🔄 Sticky Search**: Search state persists across different API calls
-- **🎯 Match Navigation**: Step through search results with Previous/Next buttons
-- **📊 Network Monitoring**: Automatic fetch and XMLHttpRequest interception
-- **⚡ Redux Integration**: Built-in Redux store monitoring
-- **📦 Batching**: Optional message batching for performance
-- **🔒 Production Safe**: Automatic no-op in production builds
+### 🎯 Core Features
+- **🔍 Real-time API Monitoring**: Automatic interception of fetch and XMLHttpRequest calls
+- **📱 Floating Button UI**: Always-accessible, draggable monitoring interface with haptic feedback
+- **🔎 Smart Search**: Real-time search with sticky state persistence across API calls
+- **🎨 JSON Highlighting**: Beautiful syntax highlighting with dark theme (keys, values, structures)
+- **📋 Copy Features**: Generate cURL commands, copy endpoints, headers, and response data
+- **🚨 Error Tracking**: Automatic error capture and detailed error reporting
+- **⚡ Performance Metrics**: Track API response times and network performance
+- **🔒 Production Safe**: Auto-disabled in production builds with `__DEV__` checks
+
+### 🚀 Advanced Features (v1.0.6+)
+- **🎯 Draggable Floating Button**: Professional floating button with smooth drag interaction and visual feedback
+- **🔄 Sticky Search**: Search queries persist when navigating between different API calls
+- **📊 Match Navigation**: Previous/Next buttons to step through search results
+- **📝 Structured Logging**: Logging, error tracking, metrics, state management, and tracing APIs
+- **🔗 Redux Integration**: Optional Redux store monitoring and action tracking
+- **📦 Message Batching**: Optional batching for improved performance
+
+### 💎 Easy Setup (v1.0.6+)
+- **🔌 FlipperInspectorProvider**: One-component setup (recommended)
+- **🪝 useFlipperInspector Hook**: One-hook initialization
+- **⚙️ Manual Setup**: Full control with `init()` and `patchNetwork()`
+
+## 📸 Screenshots
+
+### API Inspector in Action
+- Floating Button with draggable UI
+- API call list with real-time monitoring
+- Detailed API information with search
+- Beautiful JSON syntax highlighting
+
+See all screenshots: [Screenshots Guide](../../documentation/screenshots.md)
 
 ## 📦 Installation
 
@@ -44,180 +59,217 @@ pnpm add react-native-flipper-inspector
 ### Peer Dependencies
 
 ```bash
-# For Flipper integration (optional)
+# Optional: For Flipper desktop integration
 npm install react-native-flipper
 ```
 
 ## 🚀 Quick Start
 
-### Basic Usage
+### ⭐ Option 1: Ultra-Simple Setup (Recommended)
+
+Use the new `FlipperInspectorProvider` component for zero-config setup:
 
 ```typescript
-import { init, log, error, metric, state, trace } from 'react-native-flipper-inspector';
+import { FlipperInspectorProvider } from 'react-native-flipper-inspector';
 
-// Initialize the inspector
+export default function App() {
+  return (
+    <FlipperInspectorProvider>
+      <YourAppContent />
+    </FlipperInspectorProvider>
+  );
+}
+```
+
+**That's it!** Everything is automatically initialized and enabled in dev builds.
+
+### 🪝 Option 2: Hook-Based Setup
+
+Use the `useFlipperInspector` hook for simple functional component setup:
+
+```typescript
+import { useFlipperInspector } from 'react-native-flipper-inspector';
+
+export default function App() {
+  useFlipperInspector(); // Auto-initializes in dev builds
+
+  return <YourAppContent />;
+}
+```
+
+### ⚙️ Option 3: Manual Setup (Full Control)
+
+For complete customization:
+
+```typescript
+import { init, patchNetwork } from 'react-native-flipper-inspector';
+
+// Initialize with custom config
 init({
-  enabled: __DEV__, // Enable in development
+  enabled: __DEV__, // Auto-disabled in production
   batch: {
-    enabled: true,
     intervalMs: 1000,
     maxItems: 50,
   },
 });
 
-// Log messages
-log('User logged in', { userId: 123, timestamp: Date.now() });
-error('API request failed', { url: '/api/users', status: 500 });
+// Patch network to intercept API calls
+patchNetwork();
 
-// Track metrics
-metric('api_response_time', 250, { endpoint: '/api/users' });
-
-// Manage state
-state.update('user', { id: 123, name: 'John Doe' });
-state.remove('user');
-
-// Performance tracing
-const traceId = trace.start('api_call');
-// ... perform API call
-trace.end(traceId, { success: true });
+// Your app code here
 ```
 
-### API Inspector Overlay
+## 🎯 Core API Usage
+
+### Logging
 
 ```typescript
-import { ReactNativeInspectorOverlay, StoreProvider } from 'react-native-flipper-inspector';
+import { log, error } from 'react-native-flipper-inspector';
 
-function App() {
-  return (
-    <StoreProvider>
-      <YourAppContent />
-      <ReactNativeInspectorOverlay />
-    </StoreProvider>
-  );
+// Log messages
+log('User action', { userId: 123, action: 'login' });
+
+// Log errors
+error('API failed', { endpoint: '/api/users', status: 500 });
+```
+
+### Metrics
+
+```typescript
+import { metric } from 'react-native-flipper-inspector';
+
+// Track performance metrics
+metric('api_response_time', 250, { endpoint: '/api/users' });
+metric('db_query_time', 45, { operation: 'SELECT' });
+```
+
+### State Management
+
+```typescript
+import { state } from 'react-native-flipper-inspector';
+
+// Update state
+state.update('user', { id: 123, name: 'John Doe' });
+
+// Remove state
+state.remove('user');
+```
+
+### Performance Tracing
+
+```typescript
+import { trace } from 'react-native-flipper-inspector';
+
+// Start trace
+const traceId = trace.start('api_call');
+
+// Perform operation...
+try {
+  const response = await fetch('/api/data');
+  trace.end(traceId, { success: true, status: response.status });
+} catch (error) {
+  trace.end(traceId, { success: false, error: error.message });
 }
 ```
 
+## 🔍 API Inspector Overlay
+
 ### Network Monitoring
+
+The overlay automatically monitors all network requests:
 
 ```typescript
 import { patchNetwork } from 'react-native-flipper-inspector';
 
-// Automatically intercept all fetch and XMLHttpRequest calls
+// Enable automatic fetch/XMLHttpRequest interception
 patchNetwork();
 
-// Now all network requests will appear in the inspector
-fetch('/api/users')
-  .then(response => response.json())
-  .then(data => console.log(data));
+// All requests now appear in the inspector
+fetch('/api/users').then(r => r.json());
 ```
 
-### Redux Integration
+### Search Features
+
+- **Real-time Search**: Type to filter API calls by URL, method, headers, or response
+- **Sticky Search**: Search state persists when switching between different API calls
+- **Match Navigation**: Use Previous/Next buttons to navigate through matches
+- **Highlighted Matches**: Current match in orange, others in yellow
+
+### Copy Features
+
+- **cURL Commands**: Copy API calls as executable cURL commands
+- **Endpoints**: Copy just the URL
+- **Request Body**: Copy request payload
+- **Response Body**: Copy response data
+- **Headers**: Copy all request/response headers
+- **Raw JSON**: Copy complete API call data
+
+### JSON Syntax Highlighting (Dark Theme)
+
+Beautiful color-coded JSON display:
+- **Keys**: Gold (#FFD700)
+- **Strings**: Spring Green (#00FF7F)
+- **Numbers**: Deep Sky Blue (#00BFFF)
+- **Booleans**: Orange (#FFA500)
+- **Null**: Hot Pink (#FF69B4)
+- **Structure**: Medium Purple (#9370DB)
+
+## 🔗 Redux Integration
+
+Monitor Redux actions and state changes:
 
 ```typescript
 import { attachRedux } from 'react-native-flipper-inspector';
 import { store } from './store';
 
-// Monitor Redux state changes
 attachRedux(store, {
   actionFilter: (action) => action.type.startsWith('api/'),
   stateFilter: (state) => state.api,
 });
 ```
 
-## 🎨 API Inspector Overlay Features
+## 🎨 Customization
 
-### 🔍 Search & Navigation
-- **Real-time Search**: Type to filter API calls by URL, headers, or response data
-- **Sticky Search**: Search state persists when switching between different API calls
-- **Match Navigation**: Use Previous/Next buttons to step through search results
-- **Highlighted Results**: Current match highlighted in orange, others in yellow
-
-### 📋 Copy Features
-- **📋 cURL**: Generate and copy cURL commands
-- **🔗 Endpoint**: Copy just the API endpoint
-- **📤 Request Body**: Copy request payload
-- **📥 Response Body**: Copy response data
-- **📋 Headers**: Copy all request/response headers
-- **📄 Raw Data**: Copy complete API call information
-
-### 🎨 Visual Design
-- **Professional UI**: Modern gradient backgrounds and card layouts
-- **JSON Syntax Highlighting**: Beautiful dark theme with color-coded elements
-  - 🔑 **Keys**: Gold
-  - 📝 **Strings**: Spring Green
-  - 🔢 **Numbers**: Deep Sky Blue
-  - ✅ **Booleans**: Orange
-  - ❌ **Null**: Hot Pink
-  - 🔗 **Structure**: Medium Purple
-
-## 📚 API Reference
-
-### Core Functions
-
-#### `init(config?: InspectorConfig)`
-Initialize the inspector with optional configuration.
+### Configure Batching
 
 ```typescript
-interface InspectorConfig {
-  enabled?: boolean;
-  batch?: {
-    enabled: boolean;
-    intervalMs: number;
-    maxItems: number;
-  };
-}
-```
-
-#### `log(message: string, data?: any, tags?: Record<string, string>)`
-Log a message with optional data and tags.
-
-#### `error(message: string, error?: Error | any, tags?: Record<string, string>)`
-Log an error with optional error object and tags.
-
-#### `metric(name: string, value: number, tags?: Record<string, string>)`
-Track a metric with optional tags.
-
-#### `state`
-State management object with `update(key, value)` and `remove(key)` methods.
-
-#### `trace`
-Tracing object with `start(name)` and `end(id, data?)` methods.
-
-### Overlay Components
-
-#### `<ReactNativeInspectorOverlay />`
-The main overlay component that provides the floating button and monitoring interface.
-
-#### `<StoreProvider>`
-Context provider for managing API call state across the overlay.
-
-## 🔧 Configuration
-
-### Development vs Production
-
-```typescript
-import { init } from 'react-native-flipper-inspector';
-
 init({
-  enabled: __DEV__, // Automatically disabled in production
+  enabled: __DEV__,
   batch: {
-    enabled: true,
-    intervalMs: 1000,
-    maxItems: 50,
+    intervalMs: 500,    // Batch every 500ms
+    maxItems: 100,      // Or when 100 items collected
   },
 });
 ```
 
-### Custom Configuration
+### Disable in Specific Conditions
 
 ```typescript
 init({
-  enabled: true,
-  batch: {
-    enabled: false, // Disable batching for real-time updates
-  },
+  enabled: __DEV__ && !isE2ETest, // Disable in E2E tests
 });
 ```
+
+## 📱 Platform Support
+
+- **React Native**: 0.71+
+- **Android**: API 21+ (Android 5.0+)
+- **iOS**: iOS 11+
+- **TypeScript**: Full TypeScript support with strict mode
+
+## 📚 Documentation
+
+Complete documentation included in package:
+
+- **Quick Start Guide**: Get started in 5 minutes
+- **API Reference**: Complete API documentation
+- **Configuration Guide**: Configure for your needs
+- **Android/iOS Setup**: Platform-specific setup guides
+- **Network Monitoring**: Advanced network debugging
+- **Troubleshooting**: Solutions to common issues
+- **Screenshots Guide**: Visual guide to all features
+
+View on [GitHub](https://github.com/khokanuzzman/react-native-flipper-inspector/tree/main/documentation)
 
 ## 🧪 Testing
 
@@ -235,58 +287,89 @@ npm run lint
 npm run lint:fix
 ```
 
-## 📱 Platform Support
+## 🔧 Development
 
-- **React Native**: 0.71+
-- **Android**: API 21+ (Android 5.0+)
-- **iOS**: iOS 11+
-- **TypeScript**: Full TypeScript support with strict mode
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Development Setup
+### Build the Package
 
 ```bash
-# Clone the repository
-git clone https://github.com/react-native-flipper-inspector/react-native-flipper-inspector.git
-
-# Install dependencies
-pnpm install
-
-# Start development
-pnpm dev
-
-# Build package
-pnpm build
+npm run build
 ```
 
-## 📄 License
+### Watch Mode
 
-MIT License - see [LICENSE](LICENSE) file for details.
+```bash
+npm run dev
+```
 
-## 🆘 Support
+## 📊 Package Contents
 
-- **Documentation**: [GitHub Wiki](https://github.com/react-native-flipper-inspector/react-native-flipper-inspector/wiki)
-- **Issues**: [GitHub Issues](https://github.com/react-native-flipper-inspector/react-native-flipper-inspector/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/react-native-flipper-inspector/react-native-flipper-inspector/discussions)
+**v1.0.6** includes:
+
+- ✅ TypeScript source code with full type safety
+- ✅ CommonJS (CJS) distribution
+- ✅ ES Module (ESM) distribution
+- ✅ TypeScript declarations (.d.ts)
+- ✅ Source maps for debugging
+- ✅ Android native module (Java)
+- ✅ iOS native module (Objective-C)
+- ✅ 4 Beautiful screenshots
+- ✅ 8 Complete documentation guides
+- ✅ README, LICENSE, CHANGELOG
+
+**Package Size**:
+- Tarball: 296.2 KB
+- Unpacked: 686.3 KB
 
 ## 🗺️ Roadmap
 
 ### Version 2.0 (Planned)
-- **🔧 Request Builder**: Postman-style API request builder
-- **🔐 Authentication**: Bearer tokens, Basic auth, API keys
-- **📁 Collections**: Request collections and environment variables
+- **📤 Postman-like Request Sender**: Send custom API requests from the inspector
+- **📊 Advanced Analytics**: Performance graphs and network statistics
+- **🔐 Response Mocking**: Mock API responses for testing
+- **🔍 Advanced Filtering**: Filter by status, headers, payload, and more
+- **📁 Request Collections**: Save and organize requests
 - **🔗 Request Chaining**: Use response data in subsequent requests
-- **📊 Analytics**: Request/response analytics and performance metrics
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING.md) for details.
+
+### Community
+
+- **Issues**: [Report bugs](https://github.com/khokanuzzman/react-native-flipper-inspector/issues)
+- **Discussions**: [Ask questions](https://github.com/khokanuzzman/react-native-flipper-inspector/discussions)
+- **GitHub**: [View source](https://github.com/khokanuzzman/react-native-flipper-inspector)
+
+## 📄 License
+
+MIT License - See [LICENSE](../../LICENSE) file for details
+
+## 🆘 Support
+
+- **📚 Documentation**: Complete guides in the `documentation/` folder
+- **🐛 Issues**: [GitHub Issues](https://github.com/khokanuzzman/react-native-flipper-inspector/issues)
+- **💬 Discussions**: [GitHub Discussions](https://github.com/khokanuzzman/react-native-flipper-inspector/discussions)
+- **📖 Wiki**: [GitHub Wiki](https://github.com/khokanuzzman/react-native-flipper-inspector/wiki)
+
+## 🌟 Version History
+
+- **v1.0.6**: Screenshots properly included in NPM package
+- **v1.0.5**: Screenshots & documentation added to package
+- **v1.0.4**: Complete documentation & example app
+- **v1.0.3**: Draggable floating button & sticky search
+- **v1.0.2**: JSON syntax highlighting & improvements
+- **v1.0.1**: Bug fixes & stability improvements
+- **v1.0.0**: Initial release with core features
 
 ## 🙏 Acknowledgments
 
 - Built for the React Native community
 - Inspired by Flipper's debugging capabilities
 - Designed with modern development workflows in mind
+- Made by [@khokanuzzman](https://github.com/khokanuzzman)
 
 ---
 
-Made with ❤️ for React Native developers
+**Made with ❤️ for React Native developers**
+
+[⭐ Star us on GitHub!](https://github.com/khokanuzzman/react-native-flipper-inspector)
