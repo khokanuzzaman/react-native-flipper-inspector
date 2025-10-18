@@ -1,6 +1,6 @@
 {
   "name": "react-native-flipper-inspector",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "React Native debugging toolkit with API inspector, network monitoring, and Flipper integration",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
