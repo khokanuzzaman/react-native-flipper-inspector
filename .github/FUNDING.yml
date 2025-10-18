@@ -1,0 +1,16 @@
+# GitHub Funding Configuration
+# This file enables funding links on the repository
+
+# GitHub Sponsors
+github: khokanuzzman
+
+# Open Collective
+open_collective: react-native-flipper-inspector
+
+# Ko-fi
+ko_fi: khokanuzzman
+
+# Custom funding links (Buy Me a Coffee, Patreon, etc.)
+custom:
+  - https://buymeacoffee.com/khokanuzzman
+  - https://khokanuzzman.github.io/

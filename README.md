@@ -56,6 +56,20 @@ cd ios && pod install
 
 No additional setup required. The library will automatically register with React Native.
 
+## ❤️ Support This Project
+
+If you find React Native Flipper Inspector helpful, please consider supporting its development:
+
+### 💰 Sponsor Now
+- **[GitHub Sponsors](https://github.com/sponsors/khokanuzzman)** - Monthly support with perks
+- **[Buy Me a Coffee](https://buymeacoffee.com/khokanuzzman)** - One-time donation
+- **[Ko-fi](https://ko-fi.com/khokanuzzman)** - Flexible support
+- **[Open Collective](https://opencollective.com/react-native-flipper-inspector)** - Community funding
+
+**[👉 Learn more about sponsorship options →](./SPONSOR.md)**
+
+Your support helps us maintain and improve this project! 🙏
+
 ## 🚀 Quick Start
 
 ```typescript
