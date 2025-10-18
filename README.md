@@ -105,6 +105,18 @@ npm run android  # or npm run ios
 
 Open Flipper and look for the "RN Inspector" plugin to see events in real-time!
 
+## 📸 Screenshots
+
+Visual showcase of all features in action:
+
+<div align="center">
+  <img src="./screenshots/floating-button.jpeg" width="280" alt="Floating Button">
+  <img src="./screenshots/api-inspector-list.jpeg" width="280" alt="API Inspector">
+  <img src="./screenshots/api-details.jpeg" width="280" alt="API Details">
+</div>
+
+**See more:** [Complete Screenshots Guide](./documentation/screenshots.md)
+
 ## 🏗️ Development
 
 ### Setup

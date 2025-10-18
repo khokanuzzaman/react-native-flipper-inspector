@@ -2,6 +2,15 @@
 
 Automatically capture and monitor all HTTP requests in your React Native app.
 
+## 📸 Network Inspector in Action
+
+<div align="center">
+  <img src="../screenshots/api-inspector-list.jpeg" width="350" alt="Network Calls">
+  <img src="../screenshots/api-details.jpeg" width="350" alt="Request Details">
+</div>
+
+See all API calls, search, filter, and view complete request/response details!
+
 ## Overview
 
 The network monitoring feature automatically intercepts all network requests made through:

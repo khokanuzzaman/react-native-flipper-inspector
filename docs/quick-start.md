@@ -2,6 +2,14 @@
 
 Get up and running with React Native Flipper Inspector in minutes!
 
+## 📸 Quick Preview
+
+<div align="center">
+  <img src="../screenshots/floating-button.jpeg" width="300" alt="Floating Inspector Button">
+</div>
+
+The floating button appears automatically. Just tap to inspect API calls in real-time!
+
 ## Installation
 
 ### 1. Install the Package

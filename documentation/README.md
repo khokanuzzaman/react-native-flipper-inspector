@@ -7,6 +7,11 @@ Complete documentation for React Native Flipper Inspector.
 📖 **[Quick Start Guide](./quick-start.md)** - Get up and running in 5 minutes  
 It's the fastest way to start using the inspector. One-line setup with hooks!
 
+## Features & Screenshots
+
+📸 **[Screenshots](./screenshots.md)** - Visual showcase of all features  
+See the floating button, API inspector, search, JSON highlighting and more!
+
 ## Platform-Specific Setup
 
 🤖 **[Android Setup](./android-setup.md)** - Complete Android guide  

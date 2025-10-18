@@ -2,6 +2,14 @@
 
 Complete API documentation for React Native Flipper Inspector.
 
+## 📸 Visual Overview
+
+<div align="center">
+  <img src="../screenshots/api-details.jpeg" width="350" alt="API Inspector UI">
+</div>
+
+All APIs are visualized in the beautiful inspector UI shown above. View logs, errors, metrics, state changes, and network requests in real-time!
+
 ## Core Functions
 
 ### `init(config?: InspectorConfig)`

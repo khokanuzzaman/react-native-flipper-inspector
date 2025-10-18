@@ -7,7 +7,7 @@ Visual showcase of React Native Flipper Inspector features in action.
 ### 1️⃣ Floating Inspector Button
 
 <div align="center">
-  <img src="../screenshots/floating-button.png" width="300" alt="Floating Button">
+  <img src="../screenshots/floating-button.jpeg" width="300" alt="Floating Button">
 </div>
 
 **Features:**
@@ -27,7 +27,7 @@ Visual showcase of React Native Flipper Inspector features in action.
 ### 2️⃣ API Inspector Overview
 
 <div align="center">
-  <img src="../screenshots/api-inspector-list.png" width="300" alt="API Inspector List">
+  <img src="../screenshots/api-inspector-list.jpeg" width="300" alt="API Inspector List">
 </div>
 
 **Features:**
@@ -49,7 +49,7 @@ Visual showcase of React Native Flipper Inspector features in action.
 ### 3️⃣ API Call Details
 
 <div align="center">
-  <img src="../screenshots/api-details.png" width="300" alt="API Call Details">
+  <img src="../screenshots/api-details.jpeg" width="300" alt="API Call Details">
 </div>
 
 **Features:**
@@ -73,7 +73,7 @@ Visual showcase of React Native Flipper Inspector features in action.
 ### 4️⃣ Search & Highlighting
 
 <div align="center">
-  <img src="../screenshots/search-feature.png" width="300" alt="Search Feature">
+  <img src="../screenshots/api-inspector-list.jpeg" width="300" alt="Search Feature">
 </div>
 
 **Features:**
@@ -95,7 +95,7 @@ Visual showcase of React Native Flipper Inspector features in action.
 ### 5️⃣ Copy & Export Features
 
 <div align="center">
-  <img src="../screenshots/copy-features.png" width="300" alt="Copy Features">
+  <img src="../screenshots/api-details.jpeg" width="300" alt="Copy Features">
 </div>
 
 **Available Actions:**
@@ -117,7 +117,7 @@ Visual showcase of React Native Flipper Inspector features in action.
 ### 6️⃣ JSON Syntax Highlighting
 
 <div align="center">
-  <img src="../screenshots/json-highlighting.png" width="300" alt="JSON Highlighting">
+  <img src="../screenshots/json-highlighting.jpeg" width="300" alt="JSON Highlighting">
 </div>
 
 **Beautiful JSON Rendering:**
