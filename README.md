@@ -1,6 +1,6 @@
 # React Native Flipper Inspector
 
-[![CI](https://github.com/your-org/react-native-flipper-inspector/workflows/CI/badge.svg)](https://github.com/your-org/react-native-flipper-inspector/actions)
+[![CI](https://github.com/khokanuzzman/react-native-flipper-inspector/workflows/CI/badge.svg)](https://github.com/khokanuzzman/react-native-flipper-inspector/actions)
 [![npm version](https://badge.fury.io/js/react-native-flipper-inspector.svg)](https://badge.fury.io/js/react-native-flipper-inspector)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -29,13 +29,13 @@ This monorepo contains:
 ### Core Library
 
 ```bash
-pnpm add react-native-flipper-inspector
+npm add react-native-flipper-inspector
 ```
 
 ### Flipper Plugin
 
 ```bash
-pnpm add flipper-plugin-rn-inspector
+npm add flipper-plugin-rn-inspector
 ```
 
 ### iOS Setup
@@ -99,8 +99,8 @@ The example app demonstrates all features:
 
 ```bash
 cd apps/example
-pnpm install
-pnpm android  # or pnpm ios
+npm install
+npm run android  # or npm run ios
 ```
 
 Open Flipper and look for the "RN Inspector" plugin to see events in real-time!
@@ -111,36 +111,36 @@ Open Flipper and look for the "RN Inspector" plugin to see events in real-time!
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/react-native-flipper-inspector.git
+git clone https://github.com/khokanuzzman/react-native-flipper-inspector.git
 cd react-native-flipper-inspector
 
 # Install dependencies
-pnpm install
+npm install
 
 # Build all packages
-pnpm build
+npm run build
 
 # Run tests
-pnpm test
+npm run test
 
 # Lint code
-pnpm lint
+npm run lint
 ```
 
 ### Package Scripts
 
 ```bash
 # Build specific package
-pnpm -F react-native-flipper-inspector build
-pnpm -F flipper-plugin-rn-inspector build
+npm -w packages/react-native-flipper-inspector run build
+npm -w packages/flipper-plugin-rn-inspector run build
 
 # Run example app
-pnpm -F example start
-pnpm -F example android
-pnpm -F example ios
+npm -w apps/example start
+npm -w apps/example run android
+npm -w apps/example run ios
 
 # Development mode
-pnpm -F flipper-plugin-rn-inspector dev
+npm -w packages/flipper-plugin-rn-inspector run dev
 ```
 
 ## 🔧 Configuration
@@ -229,8 +229,8 @@ MIT License - see [LICENSE](./LICENSE) for details.
 
 ## 📞 Support
 
-- [GitHub Issues](https://github.com/your-org/react-native-flipper-inspector/issues)
-- [Discussions](https://github.com/your-org/react-native-flipper-inspector/discussions)
+- [GitHub Issues](https://github.com/khokanuzzman/react-native-flipper-inspector/issues)
+- [Discussions](https://github.com/khokanuzzman/react-native-flipper-inspector/discussions)
 - [Documentation](./docs/)
 
 ---

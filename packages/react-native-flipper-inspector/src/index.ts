@@ -44,3 +44,7 @@ export { isNetworkPatched } from './integrations/network';
 export { ReactNativeInspectorOverlay, useInspector } from './overlay';
 export { StoreProvider } from './components/StoreProvider';
 export { FloatingInspector } from './components/FloatingInspector';
+export { FlipperInspectorProvider } from './components/FlipperInspectorProvider';
+
+// Export easy setup hook
+export { useFlipperInspector } from './hooks/useFlipperInspector';

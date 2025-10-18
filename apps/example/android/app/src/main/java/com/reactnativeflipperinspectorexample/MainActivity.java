@@ -12,6 +12,10 @@ import android.widget.Toast;
 import android.graphics.Color;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
+import android.view.MotionEvent;
+import android.view.animation.ScaleAnimation;
+import android.os.Vibrator;
+import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -180,8 +184,102 @@ public class MainActivity extends Activity {
         floatingButton.setLayoutParams(floatingParams);
         floatingButton.setElevation(16);
         
-        floatingButton.setOnClickListener(v -> {
-            showApiInspectorOverlay();
+        // Add draggable functionality with professional visual effects
+        floatingButton.setOnTouchListener(new View.OnTouchListener() {
+            private float dX = 0;
+            private float dY = 0;
+            private long downTime = 0;
+            private static final long LONG_PRESS_THRESHOLD = 200; // ms
+            private boolean isDragging = false;
+            
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                try {
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) floatingButton.getLayoutParams();
+                    if (params == null) return false;
+                    
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            downTime = System.currentTimeMillis();
+                            dX = event.getRawX() - params.leftMargin;
+                            dY = event.getRawY() - params.topMargin;
+                            isDragging = false;
+                            return true;
+                            
+                        case MotionEvent.ACTION_MOVE:
+                            long duration = System.currentTimeMillis() - downTime;
+                            
+                            // Activate drag mode after threshold
+                            if (duration >= LONG_PRESS_THRESHOLD && !isDragging) {
+                                isDragging = true;
+                                
+                                // Haptic feedback - simple vibration
+                                try {
+                                    Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                    if (vibrator != null && vibrator.hasVibrator()) {
+                                        vibrator.vibrate(50);
+                                    }
+                                } catch (Exception e) {
+                                    // Silently fail if vibrator not available
+                                }
+                                
+                                // Visual feedback: increase shadow
+                                floatingButton.setElevation(40f);
+                                
+                                // Visual feedback: change gradient to brighter color
+                                android.graphics.drawable.GradientDrawable dragGradient = new android.graphics.drawable.GradientDrawable(
+                                    android.graphics.drawable.GradientDrawable.Orientation.BL_TR,
+                                    new int[]{Color.parseColor("#7c8ff5"), Color.parseColor("#9864d4")}
+                                );
+                                dragGradient.setCornerRadius(56);
+                                floatingButton.setBackground(dragGradient);
+                            }
+                            
+                            if (isDragging) {
+                                int newX = (int) (event.getRawX() - dX);
+                                int newY = (int) (event.getRawY() - dY);
+                                
+                                // Keep within bounds
+                                int screenWidth = getWindow().getDecorView().getWidth();
+                                int screenHeight = getWindow().getDecorView().getHeight();
+                                
+                                newX = Math.max(0, Math.min(newX, screenWidth - 112));
+                                newY = Math.max(0, Math.min(newY, screenHeight - 112));
+                                
+                                params.leftMargin = newX;
+                                params.topMargin = newY;
+                                params.gravity = 0;
+                                floatingButton.setLayoutParams(params);
+                            }
+                            return true;
+                            
+                        case MotionEvent.ACTION_UP:
+                            long pressDuration = System.currentTimeMillis() - downTime;
+                            
+                            if (isDragging) {
+                                // Reset to normal state
+                                floatingButton.setElevation(16f);
+                                
+                                // Restore original gradient
+                                android.graphics.drawable.GradientDrawable normalGradient = new android.graphics.drawable.GradientDrawable(
+                                    android.graphics.drawable.GradientDrawable.Orientation.BL_TR,
+                                    new int[]{Color.parseColor("#667eea"), Color.parseColor("#764ba2")}
+                                );
+                                normalGradient.setCornerRadius(56);
+                                floatingButton.setBackground(normalGradient);
+                                
+                                isDragging = false;
+                            } else if (pressDuration < LONG_PRESS_THRESHOLD) {
+                                // Quick tap opens inspector
+                                showApiInspectorOverlay();
+                            }
+                            return true;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
         });
         
         container.addView(floatingButton);
