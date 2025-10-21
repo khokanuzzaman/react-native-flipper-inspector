@@ -2,7 +2,7 @@
 
 Common issues and solutions when using React Native Flipper Inspector.
 
-> **📌 Version 1.0.8 Fix:** If you're experiencing "Cannot read property 'method' of undefined" errors, upgrade to v1.0.8 which fixes this critical bug. [Jump to solution](#method-property-error-fixed-in-108)
+> **📌 Version 1.0.9 Update:** Supports Android SDK 36 + fixes critical bugs. If you're experiencing namespace or method property errors, upgrade to v1.0.9. [Jump to solutions](#method-property-error-fixed-in-108)
 
 ## Plugin Not Detected
 
@@ -365,38 +365,41 @@ const startTime = Date.now();
 metric('inspector_overhead', Date.now() - startTime);
 ```
 
-## Method Property Error (Fixed in 1.0.8)
+## Android SDK 36 & Build Issues (Fixed in 1.0.9)
 
 ### Issue
 ```
-TypeError: Cannot read property 'method' of undefined
+package="..." found in source AndroidManifest.xml is no longer supported
+Setting the namespace via the package attribute is ignored
 ```
 
 ### Solution
 
-**This issue has been FIXED in version 1.0.8!**
+**This issue has been FIXED in version 1.0.9!**
 
-If you're experiencing this error, simply upgrade to the latest version:
+Upgrade to the latest version for Android SDK 36 support:
 
 ```bash
 # npm
-npm install react-native-flipper-inspector@1.0.8
+npm install react-native-flipper-inspector@1.0.9
 
 # yarn
-yarn upgrade react-native-flipper-inspector@1.0.8
+yarn upgrade react-native-flipper-inspector@1.0.9
 
 # pnpm
-pnpm update react-native-flipper-inspector@1.0.8
+pnpm update react-native-flipper-inspector@1.0.9
 ```
 
-### What Was Fixed
+### What Was Fixed in 1.0.9
 
-This error occurred due to a variable naming conflict in the minified code that affected:
-- Older React Native projects (pre-0.70)
-- Network monitoring features
-- Projects with aggressive minification
+**Android SDK 36 Support:**
+- ✅ Added namespace declaration for AGP 8.0+
+- ✅ Updated to compileSdk 36 (Android 15)
+- ✅ Modern Gradle DSL syntax (compileSdk, minSdk, targetSdk)
+- ✅ Full backward compatibility
 
-**Changes in 1.0.8:**
+**Previous Fixes (v1.0.8):**
+- ✅ Fixed "Cannot read property 'method' of undefined" error
 - ✅ Fixed variable naming conflict in network interception
 - ✅ Improved compatibility with older React Native versions
 - ✅ Enhanced global scope handling with `globalThis`

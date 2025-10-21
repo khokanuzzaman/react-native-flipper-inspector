@@ -6,7 +6,7 @@
 
 A production-ready debugging toolkit for React Native apps that integrates seamlessly with Flipper. Provides comprehensive logging, metrics, tracing, state management, and network monitoring capabilities.
 
-> **🎉 Version 1.0.8 Released!** Critical bug fix for "method" property error in older React Native projects. [See what's fixed →](#-whats-new-in-108)
+> **🎉 Version 1.0.9 Released!** Android SDK 36 support + namespace declaration for modern projects. [See what's new →](#-whats-new-in-109)
 
 ## 🚀 Features
 
@@ -71,30 +71,35 @@ If you find React Native Flipper Inspector helpful, please consider supporting i
 
 Your support helps us maintain and improve this project! 🙏
 
-## 🆕 What's New in 1.0.8
+## 🆕 What's New in 1.0.9
 
-### 🐛 Critical Bug Fix
+### 🚀 Android SDK 36 Support + Critical Fixes
 
-We've fixed a critical issue that was causing crashes in older React Native projects:
+Full support for the latest Android SDK and modern build tools, plus critical bug fixes!
 
-**Problem:** `TypeError: Cannot read property 'method' of undefined`
+**What's New in v1.0.9:**
+- 📦 **Android SDK 36** (Android 15) full support
+- 🔧 **Namespace Declaration** for Android Gradle Plugin 8.0+
+- 🔄 **Modern Gradle DSL** (compileSdk, minSdk, targetSdk)
+- ✅ **Backward Compatible** with all React Native versions
 
-**Solution:** Variable naming conflict resolved in minified code
-
-**Impact:**
-- ✅ Works perfectly with older React Native versions (pre-0.70)
-- ✅ No more crashes during network monitoring
-- ✅ Enhanced compatibility across all build configurations
+**Previous Fixes (v1.0.8):**
+- 🐛 Fixed "Cannot read property 'method' of undefined" error
+- ✅ Enhanced compatibility with older RN versions
 - ✅ Improved minification handling
 
 **Upgrade Now:**
 ```bash
-npm install react-native-flipper-inspector@1.0.8
+npm install react-native-flipper-inspector@1.0.9
 ```
 
-**No code changes required!** Just upgrade and everything works. 
+**Who Benefits:**
+- 📱 Projects using Android SDK 36
+- 🔧 Apps with Android Gradle Plugin 8.0+
+- 🌐 Modern React Native projects
+- ⚡ All React Native versions
 
-📖 [Read Full Release Notes →](./RELEASE_NOTES_v1.0.8.md) | 🔍 [View Fix Details →](./FIX_VERIFICATION.md)
+📖 [Read Full Release Notes →](./RELEASE_NOTES_v1.0.8.md) | 📋 [Changelog →](./packages/react-native-flipper-inspector/CHANGELOG.md)
 
 ---
 

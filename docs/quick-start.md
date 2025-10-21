@@ -2,7 +2,7 @@
 
 Get up and running with React Native Flipper Inspector in minutes!
 
-> **🎉 Latest Version: 1.0.8** - Critical bug fix for "method" property error. [See what's new](#whats-new-in-108)
+> **🎉 Latest Version: 1.0.9** - Android SDK 36 support + critical bug fixes. [See what's new](#whats-new-in-109)
 
 ## 📸 Quick Preview
 
@@ -99,23 +99,24 @@ export default function App() {
 
 That's it! Open Flipper and look for "RN Inspector" plugin. You'll see your events in real-time!
 
-## What's New in 1.0.8
+## What's New in 1.0.9
 
-### 🐛 Critical Bug Fix
+### 🚀 Android SDK 36 Support + Bug Fixes
 
-This version fixes a critical issue that affected older React Native projects:
+**Latest Updates (v1.0.9):**
+- 📦 Android SDK 36 (Android 15) support
+- 🔧 Namespace declaration for AGP 8.0+
+- 🔄 Modern Gradle DSL syntax
+- ✅ Full backward compatibility
 
-**Fixed:** "Cannot read property 'method' of undefined" error
-
-**Impact:** 
-- ✅ Works with older React Native versions (pre-0.70)
-- ✅ No more crashes during network monitoring
-- ✅ Improved compatibility across different build configurations
-- ✅ Enhanced minification handling
+**Previous Fixes (v1.0.8):**
+- 🐛 Fixed "Cannot read property 'method' of undefined"
+- ✅ Enhanced compatibility with older RN versions
+- ✅ Improved minification handling
 
 **Upgrade Command:**
 ```bash
-npm install react-native-flipper-inspector@1.0.8
+npm install react-native-flipper-inspector@1.0.9
 ```
 
-**No code changes required!** Just upgrade and everything works. See [Release Notes](../RELEASE_NOTES_v1.0.8.md) for details.
+**No code changes required!** Works with all React Native versions. See [Changelog](../packages/react-native-flipper-inspector/CHANGELOG.md) for details.

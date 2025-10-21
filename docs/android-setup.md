@@ -2,17 +2,25 @@
 
 Complete guide for setting up React Native Flipper Inspector on Android.
 
+> **✅ v1.0.9 Update:** Full Android SDK 36 support with namespace declaration for AGP 8.0+
+
 ## Installation
 
 ### 1. Install Package
 
 ```bash
-npm install react-native-flipper-inspector
+npm install react-native-flipper-inspector@1.0.9
 ```
 
 ### 2. Android Auto-Setup
 
 Good news! React Native automatically links the module. No additional setup required!
+
+**Supported Configurations:**
+- ✅ Android SDK 21-36 (Android 5.0 - Android 15)
+- ✅ Android Gradle Plugin 7.0+ and 8.0+
+- ✅ React Native 0.60+
+- ✅ Modern Gradle DSL
 
 ### 3. Basic Setup
 
