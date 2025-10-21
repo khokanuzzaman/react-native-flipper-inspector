@@ -95,6 +95,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.9] - 2025-10-21
+
+### Fixed
+- 🔧 **Android Namespace**: Added namespace declaration for Android Gradle Plugin 8.0+ compatibility
+- 📦 **Build Compatibility**: Updated to compileSdk 36 and targetSdk 36 for latest Android support
+- 🚀 **Gradle 8.0+**: Fixed build issues with newer Android Gradle Plugin versions
+- 🔄 **Modern Gradle API**: Updated from deprecated `compileSdkVersion` to `compileSdk`
+
+### Changed
+- ✅ Full support for Android SDK 36 (Android 15)
+- ✅ Compatible with Android Gradle Plugin 8.0+
+- ✅ Proper namespace declaration in build.gradle
+- ✅ Updated to modern Gradle DSL syntax (compileSdk, minSdk, targetSdk)
+- ✅ Backward compatible with older projects
+
+---
+
 ## [1.0.8] - 2025-10-21
 
 ### Fixed

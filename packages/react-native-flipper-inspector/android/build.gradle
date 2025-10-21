@@ -6,11 +6,12 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
-    compileSdkVersion safeExtGet("compileSdkVersion", 34)
+    namespace "com.reactnativeflipperinspector"
+    compileSdk safeExtGet("compileSdk", 36)
 
     defaultConfig {
-        minSdkVersion safeExtGet("minSdkVersion", 21)
-        targetSdkVersion safeExtGet("targetSdkVersion", 34)
+        minSdk safeExtGet("minSdk", 21)
+        targetSdk safeExtGet("targetSdk", 36)
         versionCode 1
         versionName "1.0"
     }

@@ -9,9 +9,9 @@
 
 A production-ready React Native debugging toolkit with professional API monitoring overlay, designed for seamless integration with Flipper. Monitor network requests, inspect API calls, track state changes, and debug with ease.
 
-**Latest Version**: `v1.0.8` | **Status**: ✅ Production Ready | **[What's New →](#-whats-new-in-108)**
+**Latest Version**: `v1.0.9` | **Status**: ✅ Production Ready | **[What's New →](#-whats-new-in-109)**
 
-> **🎉 v1.0.8 Released!** Critical bug fix for "method" property error in older React Native projects. Upgrade now for enhanced compatibility!
+> **🎉 v1.0.9 Released!** Android SDK 36 support + namespace fix for modern projects. Fully compatible with latest React Native!
 
 ## ✨ Key Features
 
@@ -61,34 +61,35 @@ A production-ready React Native debugging toolkit with professional API monitori
 
 See all screenshots: [Complete Screenshots Guide](../../documentation/screenshots.md)
 
-## 🆕 What's New in 1.0.8
+## 🆕 What's New in 1.0.9
 
-### 🐛 Critical Bug Fix - October 21, 2025
+### 🚀 Android SDK 36 Support - October 21, 2025
 
-We've resolved a critical issue affecting older React Native projects:
+Full support for the latest Android SDK and modern build tools!
 
-**Problem Fixed:** `TypeError: Cannot read property 'method' of undefined`
+**What's New:**
+- 📦 **Android SDK 36** (Android 15) support
+- 🔧 **Namespace Declaration** for AGP 8.0+
+- 🔄 **Modern Gradle DSL** (compileSdk, minSdk, targetSdk)
+- ✅ **Backward Compatible** with older projects
 
-**Why It Happened:** Variable naming conflict in minified code
-
-**Who Was Affected:**
-- 📱 Older React Native projects (pre-0.70)
-- 🔧 Projects with aggressive minification
-- 🌐 Apps using network monitoring
-
-**What's Fixed:**
-- ✅ Variable naming conflict resolved
-- ✅ Enhanced compatibility with all RN versions
-- ✅ Improved `globalThis` support
-- ✅ Better TypeScript declarations
-- ✅ **No code changes needed!**
+**Who Benefits:**
+- 📱 Projects using Android SDK 36
+- 🔧 Apps with Android Gradle Plugin 8.0+
+- 🌐 Modern React Native projects
+- ⚡ Latest React Native versions
 
 **Upgrade:**
 ```bash
-npm install react-native-flipper-inspector@1.0.8
+npm install react-native-flipper-inspector@1.0.9
 ```
 
-📖 [Full Release Notes](../../RELEASE_NOTES_v1.0.8.md) | 🔍 [Fix Verification](../../FIX_VERIFICATION.md)
+**Previous Fixes (v1.0.8):**
+- ✅ Fixed "method property" error
+- ✅ Enhanced compatibility
+- ✅ Improved minification handling
+
+📖 [Full Release Notes](../../RELEASE_NOTES_v1.0.8.md) | 📋 [Changelog](./CHANGELOG.md)
 
 ---
 
@@ -399,6 +400,7 @@ MIT License - See [LICENSE](../../LICENSE) file for details
 
 ## 🌟 Version History
 
+- **v1.0.9**: 🚀 Android SDK 36 support + namespace declaration (Oct 2025)
 - **v1.0.8**: 🐛 Critical bug fix for "method" property error (Oct 2025)
 - **v1.0.6**: Screenshots properly included in NPM package
 - **v1.0.5**: Screenshots & documentation added to package
