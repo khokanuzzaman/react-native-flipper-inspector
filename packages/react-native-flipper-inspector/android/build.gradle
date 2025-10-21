@@ -42,11 +42,14 @@ dependencies {
 afterEvaluate { project ->
     publishing {
         publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = 'com.reactnativeflipperinspector'
-                artifactId = 'react-native-flipper-inspector'
-                version = '1.0.0'
+            def releaseComponent = project.components.findByName("release")
+            if (releaseComponent != null) {
+                release(MavenPublication) {
+                    from releaseComponent
+                    groupId = 'com.reactnativeflipperinspector'
+                    artifactId = 'react-native-flipper-inspector'
+                    version = '1.0.0'
+                }
             }
         }
     }

@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.12] - 2024-10-21
+
+### Added
+- 🎯 **XMLHttpRequest/Axios Support in Overlay**
+  - Overlay now intercepts XMLHttpRequest in addition to fetch
+  - Full support for Axios and any XHR-based HTTP libraries
+  - Consistent network monitoring across all HTTP methods
+  - Request/response capturing for XHR with headers and body
+
+### Fixed
+- 🔧 **Android Gradle Build Issue**
+  - Fixed "Could not get unknown property 'release' for SoftwareComponent" error
+  - Added safe component resolution in build.gradle for better compatibility
+  - Improved support for different Android Gradle Plugin versions
+  - Now checks for available components before publishing configuration
+
+### Technical Details
+- Updated `networkInterceptor.ts` to patch both fetch and XMLHttpRequest
+- Added XHR lifecycle event listeners (load, error, timeout)
+- Proper request/response body and header extraction for XHR
+- Mirrors the comprehensive network patching from Flipper integration
+- Updated Android library publishing configuration
+- Added conditional component selection (release or java)
+- Ensures compatibility across different AGP versions and build configurations
+
+### Breaking Changes
+None - this is a backward-compatible enhancement
+
 ## [1.0.0] - 2024-01-15
 
 ### Added

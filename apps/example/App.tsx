@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFlipperInspector, ReactNativeInspectorOverlay, StoreProvider } from 'react-native-flipper-inspector';
-import NetworkTest from './NetworkTest';
+import AxiosTest from './AxiosTest';
 
 export default function App() {
   // ONE LINE SETUP! 🚀
@@ -8,7 +8,7 @@ export default function App() {
 
   return (
     <StoreProvider>
-      <NetworkTest />
+      <AxiosTest />
       <ReactNativeInspectorOverlay />
     </StoreProvider>
   );

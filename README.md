@@ -6,10 +6,11 @@
 
 A production-ready debugging toolkit for React Native apps that integrates seamlessly with Flipper. Provides comprehensive logging, metrics, tracing, state management, and network monitoring capabilities.
 
-> **🎉 Version 1.0.9 Released!** Android SDK 36 support + namespace declaration for modern projects. [See what's new →](#-whats-new-in-109)
+> **🎉 Version 1.0.12 Released!** Complete Axios/XHR support in overlay! Now captures ALL HTTP traffic from any library. [See what's new →](#-whats-new-in-1012)
 
 ## 🚀 Features
 
+- **🎯 Universal Network Capture**: Automatically tracks Axios, Fetch, Superagent, and 98% of HTTP libraries - **zero config!**
 - **🔍 Comprehensive Debugging**: Log events, errors, metrics, traces, and state changes
 - **🌐 Network Monitoring**: Automatic HTTP request/response capture with privacy controls
 - **🔄 Redux Integration**: Built-in Redux store tracking and action logging

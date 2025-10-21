@@ -23,18 +23,34 @@ interface ApiCallData {
   error?: string;
 }
 
+interface NetworkRequest {
+  method: string;
+  url: string;
+  headers?: Record<string, string>;
+  body?: any;
+  startTime: number;
+}
+
+// Track active XMLHttpRequest requests
+const activeRequests = new Map<XMLHttpRequest, NetworkRequest>();
+
 class NetworkInterceptor {
   private originalFetch: typeof fetch;
+  private originalXHROpen: typeof XMLHttpRequest.prototype.open;
+  private originalXHRSend: typeof XMLHttpRequest.prototype.send;
   private isPatched: boolean = false;
 
   constructor() {
     this.originalFetch = (globalThis as any).fetch;
+    this.originalXHROpen = XMLHttpRequest.prototype.open;
+    this.originalXHRSend = XMLHttpRequest.prototype.send;
   }
 
   startIntercepting() {
     if (this.isPatched) return;
     
     this.patchFetch();
+    this.patchXMLHttpRequest();
     this.isPatched = true;
   }
 
@@ -42,6 +58,9 @@ class NetworkInterceptor {
     if (!this.isPatched) return;
     
     (globalThis as any).fetch = this.originalFetch;
+    XMLHttpRequest.prototype.open = this.originalXHROpen;
+    XMLHttpRequest.prototype.send = this.originalXHRSend;
+    activeRequests.clear();
     this.isPatched = false;
   }
 
@@ -139,6 +158,141 @@ class NetworkInterceptor {
         addApiCall(apiCallData);
         throw error;
       }
+    };
+  }
+
+  private patchXMLHttpRequest() {
+    const self = this;
+
+    // Patch XMLHttpRequest.open
+    XMLHttpRequest.prototype.open = function (
+      method: string,
+      url: string | URL,
+      async?: boolean,
+      user?: string | null,
+      password?: string | null
+    ) {
+      const requestKey = this;
+      const urlString = url.toString();
+      
+      activeRequests.set(requestKey, {
+        method,
+        url: urlString,
+        startTime: Date.now(),
+      });
+
+      return self.originalXHROpen.call(this, method, url.toString(), async ?? true, user, password);
+    };
+
+    // Patch XMLHttpRequest.send
+    XMLHttpRequest.prototype.send = function (body?: Document | XMLHttpRequestBodyInit | null) {
+      const requestKey = this;
+      const request = activeRequests.get(requestKey);
+
+      if (request) {
+        // Capture request body and headers
+        let requestBody: string | undefined;
+        if (body) {
+          if (typeof body === 'string') {
+            requestBody = body;
+          } else if (body instanceof FormData) {
+            requestBody = '[FormData]';
+          } else if (body instanceof ArrayBuffer) {
+            requestBody = '[ArrayBuffer]';
+          } else {
+            requestBody = '[Binary Data]';
+          }
+        }
+        request.body = requestBody;
+      }
+
+      // Add event listeners
+      this.addEventListener('load', function() {
+        if (request) {
+          const endTime = Date.now();
+          const duration = endTime - request.startTime;
+
+          let responseBody: string | undefined;
+          try {
+            const contentType = this.getResponseHeader('content-type') || '';
+            if (contentType.includes('application/json') || contentType.includes('text/')) {
+              responseBody = this.responseText;
+            } else {
+              responseBody = '[Binary Response]';
+            }
+          } catch (error) {
+            responseBody = '[Failed to read response]';
+          }
+
+          // Parse response headers
+          const responseHeaders: Record<string, string> = {};
+          try {
+            const headersString = this.getAllResponseHeaders();
+            headersString.split('\r\n').forEach(line => {
+              const [key, value] = line.split(': ');
+              if (key && value) {
+                responseHeaders[key.toLowerCase()] = value;
+              }
+            });
+          } catch (error) {
+            // Ignore header parsing errors
+          }
+
+          const apiCallData: ApiCallData = {
+            method: request.method,
+            url: request.url,
+            status: this.status,
+            duration,
+            ...(request.headers && { requestHeaders: request.headers }),
+            responseHeaders,
+            ...(request.body && { requestBody: request.body }),
+            responseBody,
+          };
+
+          addApiCall(apiCallData);
+          activeRequests.delete(requestKey);
+        }
+      });
+
+      this.addEventListener('error', function() {
+        if (request) {
+          const endTime = Date.now();
+          const duration = endTime - request.startTime;
+
+          const apiCallData: ApiCallData = {
+            method: request.method,
+            url: request.url,
+            duration,
+            ...(request.headers && { requestHeaders: request.headers }),
+            ...(request.body && { requestBody: request.body }),
+            error: 'Network request failed',
+          };
+
+          addApiCall(apiCallData);
+          activeRequests.delete(requestKey);
+        }
+      });
+
+      this.addEventListener('timeout', function() {
+        if (request) {
+          const endTime = Date.now();
+          const duration = endTime - request.startTime;
+
+          const apiCallData: ApiCallData = {
+            method: request.method,
+            url: request.url,
+            duration,
+            ...(request.headers && { requestHeaders: request.headers }),
+            ...(request.body && { requestBody: request.body }),
+            error: 'Request timeout',
+          };
+
+          addApiCall(apiCallData);
+          activeRequests.delete(requestKey);
+        }
+      });
+
+      return self.originalXHRSend.call(this, body);
     };
   }
 }

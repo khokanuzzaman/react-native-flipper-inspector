@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@expo/cli": "^54.0.11",
+    "axios": "^1.12.2",
     "expo": "^54.0.13",
     "react": "18.2.0",
     "react-native": "0.73.2",
-    "react-native-flipper-inspector": "file:../../packages/react-native-flipper-inspector"
+    "react-native-flipper-inspector": "file:../../packages/react-native-flipper-inspector",
+    "superagent": "^10.2.3"
   },
   "jest": {
     "preset": "react-native",
