@@ -95,6 +95,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.11] - 2025-10-21
+
+### Fixed
+- 🐛 **Null Safety**: Added null checks for apiCall properties in FloatingInspector
+- 🔒 **TypeError Fix**: Resolved "Cannot read property 'method' of null" error
+- ✅ **Safe Access**: All apiCall properties now safely accessed with optional chaining
+- 🛡️ **Defensive Code**: Added fallback values for all potentially null properties
+
+### Changed
+- ✅ Improved error handling in UI components
+- ✅ Better null safety throughout the codebase
+- ✅ More robust API call display
+
+---
+
 ## [1.0.10] - 2025-10-21
 
 ### Fixed

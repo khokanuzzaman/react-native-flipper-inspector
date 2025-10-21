@@ -79,8 +79,11 @@ export const FloatingInspector: React.FC<FloatingInspectorProps> = ({
     }
   };
 
-  const generateCurl = (apiCall: ApiCall): string => {
-    let curl = `curl -X ${apiCall.method}`;
+  const generateCurl = (apiCall: ApiCall | null): string => {
+    if (!apiCall) return 'curl';
+    
+    const method = apiCall.method || 'GET';
+    let curl = `curl -X ${method}`;
     
     // Add headers
     if (apiCall.requestHeaders) {
@@ -90,11 +93,11 @@ export const FloatingInspector: React.FC<FloatingInspectorProps> = ({
     }
     
     // Add body
-    if (apiCall.requestBody && apiCall.method !== 'GET') {
+    if (apiCall.requestBody && method !== 'GET') {
       curl += ` \\\n  -d '${apiCall.requestBody}'`;
     }
     
-    curl += ` \\\n  "${apiCall.url}"`;
+    curl += ` \\\n  "${apiCall.url || ''}"`;
     
     return curl;
   };
@@ -135,88 +138,92 @@ ${apiCall.responseBody || 'N/A'}`;
     return '#666';
   };
 
-  const ApiCallDetail = ({ apiCall }: { apiCall: ApiCall }) => (
-    <Modal
-      visible={!!selectedCall}
-      animationType="slide"
-      presentationStyle="pageSheet"
-    >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalHeader}>
-          <Text style={styles.modalTitle}>API Call Details</Text>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => setSelectedCall(null)}
-          >
-            <Text style={styles.closeButtonText}>✕</Text>
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView style={styles.modalContent}>
-          <View style={styles.detailSection}>
-            <Text style={styles.sectionTitle}>Request</Text>
-            <Text style={styles.detailText}>
-              <Text style={styles.label}>Method: </Text>
-              {apiCall.method}
-            </Text>
-            <Text style={styles.detailText}>
-              <Text style={styles.label}>URL: </Text>
-              {apiCall.url}
-            </Text>
-            <Text style={styles.detailText}>
-              <Text style={styles.label}>Time: </Text>
-              {formatTimestamp(apiCall.timestamp)}
-            </Text>
+  const ApiCallDetail = ({ apiCall }: { apiCall: ApiCall | null }) => {
+    if (!apiCall) return null;
+    
+    return (
+      <Modal
+        visible={!!selectedCall}
+        animationType="slide"
+        presentationStyle="pageSheet"
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>API Call Details</Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setSelectedCall(null)}
+            >
+              <Text style={styles.closeButtonText}>✕</Text>
+            </TouchableOpacity>
           </View>
 
-          <View style={styles.detailSection}>
-            <Text style={styles.sectionTitle}>Response</Text>
-            <Text style={styles.detailText}>
-              <Text style={styles.label}>Status: </Text>
-              <Text style={{ color: getStatusColor(apiCall.status) }}>
-                {apiCall.status || 'N/A'}
-              </Text>
-            </Text>
-            <Text style={styles.detailText}>
-              <Text style={styles.label}>Duration: </Text>
-              {apiCall.duration}ms
-            </Text>
-          </View>
-
-          {apiCall.responseBody && (
+          <ScrollView style={styles.modalContent}>
             <View style={styles.detailSection}>
-              <Text style={styles.sectionTitle}>Response Body</Text>
-              <ScrollView style={styles.jsonContainer}>
-                <Text style={styles.jsonText}>{apiCall.responseBody}</Text>
-              </ScrollView>
+              <Text style={styles.sectionTitle}>Request</Text>
+              <Text style={styles.detailText}>
+                <Text style={styles.label}>Method: </Text>
+                {apiCall.method || 'GET'}
+              </Text>
+              <Text style={styles.detailText}>
+                <Text style={styles.label}>URL: </Text>
+                {apiCall.url || ''}
+              </Text>
+              <Text style={styles.detailText}>
+                <Text style={styles.label}>Time: </Text>
+                {formatTimestamp(apiCall.timestamp || Date.now())}
+              </Text>
+            </View>
+
+            <View style={styles.detailSection}>
+              <Text style={styles.sectionTitle}>Response</Text>
+              <Text style={styles.detailText}>
+                <Text style={styles.label}>Status: </Text>
+                <Text style={{ color: getStatusColor(apiCall.status) }}>
+                  {apiCall.status || 'N/A'}
+                </Text>
+              </Text>
+              <Text style={styles.detailText}>
+                <Text style={styles.label}>Duration: </Text>
+                {apiCall.duration || 0}ms
+              </Text>
+            </View>
+
+            {apiCall && apiCall.responseBody && (
+              <View style={styles.detailSection}>
+                <Text style={styles.sectionTitle}>Response Body</Text>
+                <ScrollView style={styles.jsonContainer}>
+                  <Text style={styles.jsonText}>{apiCall.responseBody}</Text>
+                </ScrollView>
+                <TouchableOpacity
+                  style={styles.actionButton}
+                  onPress={() => copyToClipboard(apiCall.responseBody || '')}
+                >
+                  <Text style={styles.actionButtonText}>📋 Copy Response</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            <View style={styles.detailSection}>
+              <Text style={styles.sectionTitle}>Actions</Text>
               <TouchableOpacity
                 style={styles.actionButton}
-                onPress={() => copyToClipboard(apiCall.responseBody || '')}
+                onPress={() => copyToClipboard(generateCurl(apiCall))}
               >
-                <Text style={styles.actionButtonText}>📋 Copy Response</Text>
+                <Text style={styles.actionButtonText}>📋 Copy cURL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={() => shareApiCall(apiCall)}
+              >
+                <Text style={styles.actionButtonText}>📤 Share</Text>
               </TouchableOpacity>
             </View>
-          )}
-
-          <View style={styles.detailSection}>
-            <Text style={styles.sectionTitle}>Actions</Text>
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={() => copyToClipboard(generateCurl(apiCall))}
-            >
-              <Text style={styles.actionButtonText}>📋 Copy cURL</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={() => shareApiCall(apiCall)}
-            >
-              <Text style={styles.actionButtonText}>📤 Share</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
-    </Modal>
-  );
+          </ScrollView>
+        </View>
+      </Modal>
+    );
+  };
 
   return (
     <>
@@ -261,13 +268,13 @@ ${apiCall.responseBody || 'N/A'}`;
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>
-                {apiCalls.filter(call => call.status && call.status >= 200 && call.status < 300).length}
+                {apiCalls.filter(call => call && call.status && call.status >= 200 && call.status < 300).length}
               </Text>
               <Text style={styles.statLabel}>Success</Text>
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>
-                {apiCalls.filter(call => call.status && call.status >= 400).length}
+                {apiCalls.filter(call => call && call.status && call.status >= 400).length}
               </Text>
               <Text style={styles.statLabel}>Errors</Text>
             </View>
@@ -290,25 +297,25 @@ ${apiCall.responseBody || 'N/A'}`;
                 >
                   <View style={styles.apiCallHeader}>
                     <View style={styles.apiCallInfo}>
-                      <Text style={styles.methodText}>{call.method}</Text>
+                      <Text style={styles.methodText}>{call?.method || 'GET'}</Text>
                       <Text style={styles.urlText} numberOfLines={1}>
-                        {call.url}
+                        {call?.url || ''}
                       </Text>
                     </View>
                     <View style={styles.apiCallMeta}>
                       <Text
                         style={[
                           styles.statusText,
-                          { color: getStatusColor(call.status) },
+                          { color: getStatusColor(call?.status) },
                         ]}
                       >
                         {call.status || 'Pending'}
                       </Text>
-                      <Text style={styles.durationText}>{call.duration}ms</Text>
+                      <Text style={styles.durationText}>{call?.duration || 0}ms</Text>
                     </View>
                   </View>
                   <Text style={styles.timestampText}>
-                    {formatTimestamp(call.timestamp)}
+                    {formatTimestamp(call?.timestamp || Date.now())}
                   </Text>
                 </TouchableOpacity>
               ))
@@ -317,7 +324,7 @@ ${apiCall.responseBody || 'N/A'}`;
         </View>
       </Modal>
 
-      <ApiCallDetail apiCall={selectedCall!} />
+      <ApiCallDetail apiCall={selectedCall} />
     </>
   );
 };
