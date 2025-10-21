@@ -5,6 +5,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.14] - 2024-10-21
+
+### Added
+- 🎯 **PROPER FIX: Unified Interceptor Registry**
+  - Created shared `interceptorRegistry` singleton
+  - Both Flipper and Overlay now coordinate through registry
+  - Network methods patched only ONCE, multiple listeners supported
+  - NO conflicts, NO infinite recursion, NO limitations!
+
+### Fixed
+- ✅ **Complete Axios/XHR support restored in overlay**
+  - Axios requests now appear in overlay ✅
+  - XHR requests now appear in overlay ✅
+  - Fetch requests still work ✅
+  - No stack overflow ✅
+  - Works alongside Flipper integration ✅
+
+### Technical Details
+- Created `src/core/interceptorRegistry.ts` - Unified interceptor system
+- Registry stores truly original methods before any patching
+- Multiple systems can register callbacks without conflicts
+- Each system gets unregister function for cleanup
+- Single patch point, multiple listeners architecture
+
+### Result
+- 🎉 **100% feature complete**
+- 🎉 **No limitations**
+- 🎉 **Proper architecture**
+- 🎉 **Production ready**
+
+## [1.0.13] - 2024-10-21
+
+### Fixed
+- 🐛 **CRITICAL: Maximum call stack size exceeded**
+  - Fixed infinite recursion caused by conflicting XHR patches
+  - Temporarily disabled XHR patching in overlay to prevent conflicts with Flipper integration
+  - Added global patch guard to prevent double-patching
+  - Added extensive console logging for debugging
+
+### Changed
+- ⚠️ **Overlay now only intercepts Fetch requests**
+  - XHR/Axios interception temporarily disabled in overlay due to conflict
+  - For Axios/XHR monitoring, use Flipper desktop client or `useFlipperInspector()` hook
+  - This prevents the stack overflow but limits overlay functionality
+
+### Technical Details
+- Root cause: Both `patchNetwork()` (Flipper) and `networkInterceptor` (overlay) were patching XHR
+- When overlay patched XHR, it stored already-patched methods as "originals"
+- This created infinite recursion: patched → patched → patched → stack overflow
+- Solution: Disabled XHR patching in overlay until proper coordination is implemented
+
+### Note
+- v1.0.12 XHR support is rolled back temporarily
+- Full fix requires refactoring to coordinate between Flipper and overlay patching
+- Or using only overlay without Flipper integration
+
 ## [1.0.12] - 2024-10-21
 
 ### Added

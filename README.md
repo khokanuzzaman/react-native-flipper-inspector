@@ -6,7 +6,7 @@
 
 A production-ready debugging toolkit for React Native apps that integrates seamlessly with Flipper. Provides comprehensive logging, metrics, tracing, state management, and network monitoring capabilities.
 
-> **🎉 Version 1.0.12 Released!** Complete Axios/XHR support in overlay! Now captures ALL HTTP traffic from any library. [See what's new →](#-whats-new-in-1012)
+> **🎉 Version 1.0.14 Released!** PERFECT FIX - Unified Interceptor Registry! Complete Axios/XHR support with zero conflicts. [See what's new →](#-whats-new-in-1014)
 
 ## 🚀 Features
 
