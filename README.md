@@ -6,6 +6,8 @@
 
 A production-ready debugging toolkit for React Native apps that integrates seamlessly with Flipper. Provides comprehensive logging, metrics, tracing, state management, and network monitoring capabilities.
 
+> **🎉 Version 1.0.8 Released!** Critical bug fix for "method" property error in older React Native projects. [See what's fixed →](#-whats-new-in-108)
+
 ## 🚀 Features
 
 - **🔍 Comprehensive Debugging**: Log events, errors, metrics, traces, and state changes
@@ -69,6 +71,33 @@ If you find React Native Flipper Inspector helpful, please consider supporting i
 
 Your support helps us maintain and improve this project! 🙏
 
+## 🆕 What's New in 1.0.8
+
+### 🐛 Critical Bug Fix
+
+We've fixed a critical issue that was causing crashes in older React Native projects:
+
+**Problem:** `TypeError: Cannot read property 'method' of undefined`
+
+**Solution:** Variable naming conflict resolved in minified code
+
+**Impact:**
+- ✅ Works perfectly with older React Native versions (pre-0.70)
+- ✅ No more crashes during network monitoring
+- ✅ Enhanced compatibility across all build configurations
+- ✅ Improved minification handling
+
+**Upgrade Now:**
+```bash
+npm install react-native-flipper-inspector@1.0.8
+```
+
+**No code changes required!** Just upgrade and everything works. 
+
+📖 [Read Full Release Notes →](./RELEASE_NOTES_v1.0.8.md) | 🔍 [View Fix Details →](./FIX_VERIFICATION.md)
+
+---
+
 ## 🚀 Quick Start
 
 ```typescript
@@ -123,10 +152,21 @@ Open Flipper and look for the "RN Inspector" plugin to see events in real-time!
 Visual showcase of all features in action:
 
 <div align="center">
-  <img src="./screenshots/floating-button.jpeg" width="280" alt="Floating Button">
-  <img src="./screenshots/api-inspector-list.jpeg" width="280" alt="API Inspector">
-  <img src="./screenshots/api-details.jpeg" width="280" alt="API Details">
+  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/floating-button.jpeg" width="280" alt="Floating Button">
+  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/api-inspector-list.jpeg" width="280" alt="API Inspector">
+  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/api-details.jpeg" width="280" alt="API Details">
 </div>
+
+<div align="center">
+  <p><strong>Floating Inspector Button</strong> | <strong>API Call List</strong> | <strong>Detailed Request View</strong></p>
+</div>
+
+**Features Shown:**
+- 🔍 Floating inspector button (always accessible)
+- 📊 Complete API call history with status codes
+- 🎨 Beautiful JSON syntax highlighting
+- 📋 Copy as cURL, headers, response body
+- 🔎 Real-time search and filtering
 
 **See more:** [Complete Screenshots Guide](./documentation/screenshots.md)
 

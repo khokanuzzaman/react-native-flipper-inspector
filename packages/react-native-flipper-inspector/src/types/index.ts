@@ -2,6 +2,10 @@
  * Core types for React Native Flipper Inspector
  */
 
+declare global {
+  var global: typeof globalThis;
+}
+
 export interface InspectorConfig {
   /** Whether the inspector is enabled (default: true in __DEV__) */
   enabled?: boolean;

@@ -95,6 +95,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.8] - 2025-10-21
+
+### Fixed
+- 🐛 **Critical Bug Fix**: Resolved "cannot read property 'method' of undefined" error
+  - Fixed variable naming conflict in minified code that caused crashes in older React Native projects
+  - Changed variable name from `method` to `httpMethod` to avoid minification conflicts
+  - Updated global references from `global` to `globalThis` for better compatibility
+  - Added proper TypeScript type declarations for global scope
+  - Improved network interception reliability across different React Native versions
+  
+### Changed
+- 🔧 **Improved Compatibility**: Enhanced compatibility with older React Native projects
+- 📦 **Better Minification**: More robust code minification that avoids naming conflicts
+- 🛡️ **Type Safety**: Enhanced TypeScript types for global scope handling
+
+### Technical Details
+- Files modified:
+  - `src/integrations/network.ts`
+  - `src/core/networkInterceptor.ts`
+  - `src/types/index.ts`
+- All tests passing
+- No breaking changes
+
+---
+
 ## [Unreleased]
 
 ### Planned for Version 2.0

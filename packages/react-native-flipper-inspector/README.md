@@ -9,7 +9,9 @@
 
 A production-ready React Native debugging toolkit with professional API monitoring overlay, designed for seamless integration with Flipper. Monitor network requests, inspect API calls, track state changes, and debug with ease.
 
-**Latest Version**: `v1.0.6` | **Status**: ✅ Production Ready
+**Latest Version**: `v1.0.8` | **Status**: ✅ Production Ready | **[What's New →](#-whats-new-in-108)**
+
+> **🎉 v1.0.8 Released!** Critical bug fix for "method" property error in older React Native projects. Upgrade now for enhanced compatibility!
 
 ## ✨ Key Features
 
@@ -39,12 +41,56 @@ A production-ready React Native debugging toolkit with professional API monitori
 ## 📸 Screenshots
 
 ### API Inspector in Action
-- Floating Button with draggable UI
-- API call list with real-time monitoring
-- Detailed API information with search
-- Beautiful JSON syntax highlighting
 
-See all screenshots: [Screenshots Guide](../../documentation/screenshots.md)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/floating-button.jpeg" width="280" alt="Floating Button">
+  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/api-inspector-list.jpeg" width="280" alt="API Inspector">
+  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/api-details.jpeg" width="280" alt="API Details">
+</div>
+
+<div align="center">
+  <p><strong>Draggable Floating Button</strong> | <strong>API Call List</strong> | <strong>Request Details</strong></p>
+</div>
+
+**What You See:**
+- 🎯 Floating Button with smooth drag interaction
+- 📊 API call list with real-time monitoring
+- 🔍 Detailed API information with search
+- 🎨 Beautiful JSON syntax highlighting
+- 📋 Copy as cURL, headers, response body
+
+See all screenshots: [Complete Screenshots Guide](../../documentation/screenshots.md)
+
+## 🆕 What's New in 1.0.8
+
+### 🐛 Critical Bug Fix - October 21, 2025
+
+We've resolved a critical issue affecting older React Native projects:
+
+**Problem Fixed:** `TypeError: Cannot read property 'method' of undefined`
+
+**Why It Happened:** Variable naming conflict in minified code
+
+**Who Was Affected:**
+- 📱 Older React Native projects (pre-0.70)
+- 🔧 Projects with aggressive minification
+- 🌐 Apps using network monitoring
+
+**What's Fixed:**
+- ✅ Variable naming conflict resolved
+- ✅ Enhanced compatibility with all RN versions
+- ✅ Improved `globalThis` support
+- ✅ Better TypeScript declarations
+- ✅ **No code changes needed!**
+
+**Upgrade:**
+```bash
+npm install react-native-flipper-inspector@1.0.8
+```
+
+📖 [Full Release Notes](../../RELEASE_NOTES_v1.0.8.md) | 🔍 [Fix Verification](../../FIX_VERIFICATION.md)
+
+---
 
 ## 📦 Installation
 
@@ -353,6 +399,7 @@ MIT License - See [LICENSE](../../LICENSE) file for details
 
 ## 🌟 Version History
 
+- **v1.0.8**: 🐛 Critical bug fix for "method" property error (Oct 2025)
 - **v1.0.6**: Screenshots properly included in NPM package
 - **v1.0.5**: Screenshots & documentation added to package
 - **v1.0.4**: Complete documentation & example app

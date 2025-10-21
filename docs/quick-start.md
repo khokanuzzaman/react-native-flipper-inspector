@@ -2,6 +2,8 @@
 
 Get up and running with React Native Flipper Inspector in minutes!
 
+> **🎉 Latest Version: 1.0.8** - Critical bug fix for "method" property error. [See what's new](#whats-new-in-108)
+
 ## 📸 Quick Preview
 
 <div align="center">
@@ -96,3 +98,24 @@ export default function App() {
 ```
 
 That's it! Open Flipper and look for "RN Inspector" plugin. You'll see your events in real-time!
+
+## What's New in 1.0.8
+
+### 🐛 Critical Bug Fix
+
+This version fixes a critical issue that affected older React Native projects:
+
+**Fixed:** "Cannot read property 'method' of undefined" error
+
+**Impact:** 
+- ✅ Works with older React Native versions (pre-0.70)
+- ✅ No more crashes during network monitoring
+- ✅ Improved compatibility across different build configurations
+- ✅ Enhanced minification handling
+
+**Upgrade Command:**
+```bash
+npm install react-native-flipper-inspector@1.0.8
+```
+
+**No code changes required!** Just upgrade and everything works. See [Release Notes](../RELEASE_NOTES_v1.0.8.md) for details.

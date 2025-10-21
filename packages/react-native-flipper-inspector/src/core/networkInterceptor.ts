@@ -28,7 +28,7 @@ class NetworkInterceptor {
   private isPatched: boolean = false;
 
   constructor() {
-    this.originalFetch = global.fetch;
+    this.originalFetch = (globalThis as any).fetch;
   }
 
   startIntercepting() {
@@ -41,15 +41,15 @@ class NetworkInterceptor {
   stopIntercepting() {
     if (!this.isPatched) return;
     
-    global.fetch = this.originalFetch;
+    (globalThis as any).fetch = this.originalFetch;
     this.isPatched = false;
   }
 
   private patchFetch() {
-    global.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+    (globalThis as any).fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
       const startTime = Date.now();
       const url = typeof input === 'string' ? input : input.toString();
-      const method = init?.method || 'GET';
+      const httpMethod = init?.method || 'GET';
       
       let requestBody: string | undefined;
       let requestHeaders: Record<string, string> = {};
@@ -112,7 +112,7 @@ class NetworkInterceptor {
         }
 
         const apiCallData: ApiCallData = {
-          method,
+          method: httpMethod,
           url,
           status: response.status,
           duration,
@@ -128,7 +128,7 @@ class NetworkInterceptor {
         const duration = Date.now() - startTime;
         
         const apiCallData: ApiCallData = {
-          method,
+          method: httpMethod,
           url,
           duration,
           requestHeaders,

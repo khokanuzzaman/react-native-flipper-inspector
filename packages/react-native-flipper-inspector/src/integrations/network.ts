@@ -34,15 +34,15 @@ export function patchNetwork(options: NetworkPatchOptions = {}): () => void {
   }
 
   // Store original functions
-  originalFetch = global.fetch;
+  originalFetch = (globalThis as any).fetch;
   originalXHROpen = XMLHttpRequest.prototype.open;
   originalXHRSend = XMLHttpRequest.prototype.send;
 
   // Patch fetch
-  global.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+  (globalThis as any).fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
     const startTime = Date.now();
     const url = typeof input === 'string' ? input : input.toString();
-    const method = init?.method || 'GET';
+    const httpMethod = init?.method || 'GET';
 
     try {
       const response = await originalFetch(input, init);
@@ -64,7 +64,7 @@ export function patchNetwork(options: NetworkPatchOptions = {}): () => void {
 
       // Send network message
       sendNetworkMessage({
-        method,
+        method: httpMethod,
         url,
         status: response.status,
         duration,
@@ -84,7 +84,7 @@ export function patchNetwork(options: NetworkPatchOptions = {}): () => void {
 
       // Send error message
       sendNetworkMessage({
-        method,
+        method: httpMethod,
         url,
         duration,
         requestSize: init?.body ? new Blob([init.body as BlobPart]).size : 0,
@@ -112,7 +112,7 @@ export function patchNetwork(options: NetworkPatchOptions = {}): () => void {
       startTime: Date.now(),
     });
 
-    return originalXHROpen.call(this, method, url.toString(), async, user, password);
+    return originalXHROpen.call(this, method, url.toString(), async ?? true, user, password);
   };
 
   XMLHttpRequest.prototype.send = function (body?: Document | XMLHttpRequestBodyInit | null) {
@@ -202,7 +202,7 @@ export function patchNetwork(options: NetworkPatchOptions = {}): () => void {
   // Return unpatch function
   return () => {
     if (originalFetch) {
-      global.fetch = originalFetch;
+      (globalThis as any).fetch = originalFetch;
     }
     if (originalXHROpen) {
       XMLHttpRequest.prototype.open = originalXHROpen;
@@ -235,5 +235,5 @@ function sendNetworkMessage(data: InspectorMessage['data']): void {
  * Check if network patching is active
  */
 export function isNetworkPatched(): boolean {
-  return global.fetch !== originalFetch;
+  return (globalThis as any).fetch !== originalFetch;
 }

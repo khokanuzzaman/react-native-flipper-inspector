@@ -2,6 +2,8 @@
 
 Common issues and solutions when using React Native Flipper Inspector.
 
+> **📌 Version 1.0.8 Fix:** If you're experiencing "Cannot read property 'method' of undefined" errors, upgrade to v1.0.8 which fixes this critical bug. [Jump to solution](#method-property-error-fixed-in-108)
+
 ## Plugin Not Detected
 
 ### Issue
@@ -363,10 +365,76 @@ const startTime = Date.now();
 metric('inspector_overhead', Date.now() - startTime);
 ```
 
+## Method Property Error (Fixed in 1.0.8)
+
+### Issue
+```
+TypeError: Cannot read property 'method' of undefined
+```
+
+### Solution
+
+**This issue has been FIXED in version 1.0.8!**
+
+If you're experiencing this error, simply upgrade to the latest version:
+
+```bash
+# npm
+npm install react-native-flipper-inspector@1.0.8
+
+# yarn
+yarn upgrade react-native-flipper-inspector@1.0.8
+
+# pnpm
+pnpm update react-native-flipper-inspector@1.0.8
+```
+
+### What Was Fixed
+
+This error occurred due to a variable naming conflict in the minified code that affected:
+- Older React Native projects (pre-0.70)
+- Network monitoring features
+- Projects with aggressive minification
+
+**Changes in 1.0.8:**
+- ✅ Fixed variable naming conflict in network interception
+- ✅ Improved compatibility with older React Native versions
+- ✅ Enhanced global scope handling with `globalThis`
+- ✅ Better TypeScript type declarations
+- ✅ No code changes required from users
+
+### Verification
+
+After upgrading, test that the issue is resolved:
+
+```typescript
+import { useFlipperInspector } from 'react-native-flipper-inspector';
+
+function App() {
+  useFlipperInspector(); // Should work without errors
+  
+  // Test with a network request
+  fetch('https://jsonplaceholder.typicode.com/posts/1')
+    .then(res => res.json())
+    .then(data => console.log('✅ Network monitoring working!', data))
+    .catch(err => console.error('❌ Error:', err));
+  
+  return <YourApp />;
+}
+```
+
+**Expected Result:** No errors, network requests are monitored successfully.
+
+For more details, see:
+- [Release Notes v1.0.8](../RELEASE_NOTES_v1.0.8.md)
+- [Fix Verification Report](../FIX_VERIFICATION.md)
+
 ## Best Practices for Troubleshooting
 
-1. **Start Simple**: Begin with basic logging before adding complex features
-2. **Test Incrementally**: Add one feature at a time
-3. **Use the Example App**: Reference the example app for working code
-4. **Check Logs**: Always check console logs and Flipper logs
-5. **Verify Environment**: Ensure you're in debug mode with Flipper running
+1. **Keep Updated**: Always use the latest version to get bug fixes
+2. **Start Simple**: Begin with basic logging before adding complex features
+3. **Test Incrementally**: Add one feature at a time
+4. **Use the Example App**: Reference the example app for working code
+5. **Check Logs**: Always check console logs and Flipper logs
+6. **Verify Environment**: Ensure you're in debug mode with Flipper running
+7. **Report Issues**: If you find a bug, report it on GitHub with reproduction steps
