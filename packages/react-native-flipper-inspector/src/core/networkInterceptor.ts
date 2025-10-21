@@ -8,8 +8,12 @@ export function setGlobalAddApiCall(fn: (apiCall: any) => void) {
 }
 
 function addApiCall(apiCall: any) {
+  console.log('[NetworkInterceptor] addApiCall called:', apiCall.method, apiCall.url);
   if (globalAddApiCall) {
+    console.log('[NetworkInterceptor] ✅ Calling globalAddApiCall');
     globalAddApiCall(apiCall);
+  } else {
+    console.warn('[NetworkInterceptor] ❌ globalAddApiCall not set! StoreProvider may not be initialized.');
   }
 }
 

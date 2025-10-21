@@ -27,24 +27,12 @@ export const ReactNativeInspectorOverlay: React.FC<ReactNativeInspectorOverlayPr
   size = 60,
   color = '#007bff',
 }) => {
-  useEffect(() => {
-    if (enabled) {
-      startNetworkInterception();
-    } else {
-      stopNetworkInterception();
-    }
-
-    return () => {
-      stopNetworkInterception();
-    };
-  }, [enabled]);
-
   if (!enabled) {
     return null;
   }
 
   return (
-    <StoreProvider>
+    <StoreProvider enabled={enabled}>
       <FloatingInspector
         position={position}
         size={size}

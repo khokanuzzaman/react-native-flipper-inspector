@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
-import { setGlobalAddApiCall } from '../core/networkInterceptor';
+import { setGlobalAddApiCall, startNetworkInterception, stopNetworkInterception } from '../core/networkInterceptor';
 
 interface ApiCall {
   id: string;
@@ -64,9 +64,10 @@ const StoreContext = createContext<StoreContextType | null>(null);
 
 interface StoreProviderProps {
   children: ReactNode;
+  enabled?: boolean;
 }
 
-export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
+export const StoreProvider: React.FC<StoreProviderProps> = ({ children, enabled = true }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
   const addApiCall = (apiCall: Omit<ApiCall, 'id' | 'timestamp'>) => {
@@ -86,10 +87,23 @@ export const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
     dispatch({ type: 'SET_ENABLED', payload: enabled });
   };
 
-  // Set the global function for network interceptor
+  // Set the global function for network interceptor and start interception
   useEffect(() => {
+    console.log('[StoreProvider] Setting up network interception...');
     setGlobalAddApiCall(addApiCall);
-  }, []);
+    
+    if (enabled) {
+      console.log('[StoreProvider] Starting network interception...');
+      startNetworkInterception();
+    }
+
+    return () => {
+      if (enabled) {
+        console.log('[StoreProvider] Stopping network interception...');
+        stopNetworkInterception();
+      }
+    };
+  }, [enabled]);
 
   const value: StoreContextType = {
     state,

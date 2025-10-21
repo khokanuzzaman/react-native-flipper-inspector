@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.15] - 2025-10-21
+
+### Fixed
+- Overlay not showing network calls due to race condition
+- StoreProvider now properly initializes before network interception starts
+- Fixed timing issue between globalAddApiCall setup and network interception
+- Added proper debugging logs for troubleshooting
+
+### Changed
+- StoreProvider now accepts `enabled` prop and manages network interception lifecycle
+- Moved network interception start from overlay component to StoreProvider
+- Added comprehensive logging for debugging network call flow
+
+### Technical Details
+- Fixed race condition where startNetworkInterception() was called before setGlobalAddApiCall()
+- StoreProvider now handles both global function setup and network interception start
+- Added debug logs to track network call flow from registry to overlay
+
 ## [1.0.14] - 2024-10-21
 
 ### Added
