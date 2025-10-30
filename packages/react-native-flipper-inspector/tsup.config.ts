@@ -12,7 +12,7 @@ export default defineConfig({
   clean: true,
   external: ['react', 'react-native', 'react-native-flipper'],
   treeshake: true,
-  minify: true,
+  minify: false,
   target: 'es2020',
   outDir: 'dist',
   tsconfig: './tsconfig.json',

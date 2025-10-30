@@ -4,44 +4,31 @@
 [![npm version](https://badge.fury.io/js/react-native-flipper-inspector.svg)](https://badge.fury.io/js/react-native-flipper-inspector)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A production-ready debugging toolkit for React Native apps that integrates seamlessly with Flipper. Provides comprehensive logging, metrics, tracing, state management, and network monitoring capabilities.
+A powerful debugging toolkit for React Native apps with a beautiful floating inspector UI. Monitor API calls, network requests, and debug your app with an intuitive interface that works alongside Flipper.
 
-> **🎉 Version 1.0.14 Released!** PERFECT FIX - Unified Interceptor Registry! Complete Axios/XHR support with zero conflicts. [See what's new →](#-whats-new-in-1014)
+**Current Version: 1.0.15** - Fixed package building and minification issues. Improved compatibility and documentation.
 
-## 🚀 Features
+## ✨ Key Features
 
-- **🎯 Universal Network Capture**: Automatically tracks Axios, Fetch, Superagent, and 98% of HTTP libraries - **zero config!**
-- **🔍 Comprehensive Debugging**: Log events, errors, metrics, traces, and state changes
-- **🌐 Network Monitoring**: Automatic HTTP request/response capture with privacy controls
-- **🔄 Redux Integration**: Built-in Redux store tracking and action logging
-- **⚡ Performance Optimized**: Batched messaging and configurable payload limits
-- **🛡️ Production Safe**: No-op when Flipper is unavailable, privacy controls included
-- **📱 Cross-Platform**: Works on Android and iOS with Hermes enabled/disabled
-- **🎨 Beautiful UI**: Intuitive Flipper plugin interface with filtering and export
+- **🔍 Floating Inspector UI**: Always-accessible floating button with beautiful modal interface
+- **🌐 Network Monitoring**: Automatic HTTP request/response capture with real-time filtering
+- **📊 API Call Tracking**: Complete request/response details with status codes and timing
+- **🎨 Modern Design**: Professional UI with dark theme and smooth animations
+- **📱 Cross-Platform**: Works on both Android and iOS
+- **⚡ Zero Config**: Works out of the box with most HTTP libraries
+- **🛡️ Production Safe**: Automatically disabled in production builds
 
-## 📦 Packages
+## 🚀 Quick Installation
 
-This monorepo contains:
-
-- **`react-native-flipper-inspector`**: Core React Native library
-- **`flipper-plugin-rn-inspector`**: Flipper desktop plugin
-- **`example`**: Comprehensive example React Native app
-
-## 🛠️ Installation
-
-### Core Library
+### 1. Install the Package
 
 ```bash
-npm add react-native-flipper-inspector
+npm install react-native-flipper-inspector
+# or
+yarn add react-native-flipper-inspector
 ```
 
-### Flipper Plugin
-
-```bash
-npm add flipper-plugin-rn-inspector
-```
-
-### iOS Setup
+### 2. iOS Setup
 
 Add to your `ios/Podfile`:
 
@@ -55,95 +42,105 @@ Then run:
 cd ios && pod install
 ```
 
-### Android Setup
+### 3. Android Setup
 
-No additional setup required. The library will automatically register with React Native.
+No additional setup required! The library auto-registers with React Native.
 
-## ❤️ Support This Project
+### 4. Add to Your App
 
-If you find React Native Flipper Inspector helpful, please consider supporting its development:
-
-### 💰 Sponsor Now
-- **[GitHub Sponsors](https://github.com/sponsors/khokanuzzman)** - Monthly support with perks
-- **[Ko-fi](https://ko-fi.com/khokanuzzman)** - Flexible support
-- **[Open Collective](https://opencollective.com/react-native-flipper-inspector)** - Community funding
-
-**[👉 Learn more about sponsorship options →](./SPONSOR.md)**
-
-Your support helps us maintain and improve this project! 🙏
-
-## 🆕 What's New in 1.0.9
-
-### 🚀 Android SDK 36 Support + Critical Fixes
-
-Full support for the latest Android SDK and modern build tools, plus critical bug fixes!
-
-**What's New in v1.0.9:**
-- 📦 **Android SDK 36** (Android 15) full support
-- 🔧 **Namespace Declaration** for Android Gradle Plugin 8.0+
-- 🔄 **Modern Gradle DSL** (compileSdk, minSdk, targetSdk)
-- ✅ **Backward Compatible** with all React Native versions
-
-**Previous Fixes (v1.0.8):**
-- 🐛 Fixed "Cannot read property 'method' of undefined" error
-- ✅ Enhanced compatibility with older RN versions
-- ✅ Improved minification handling
-
-**Upgrade Now:**
-```bash
-npm install react-native-flipper-inspector@1.0.9
-```
-
-**Who Benefits:**
-- 📱 Projects using Android SDK 36
-- 🔧 Apps with Android Gradle Plugin 8.0+
-- 🌐 Modern React Native projects
-- ⚡ All React Native versions
-
-📖 [Read Full Release Notes →](./RELEASE_NOTES_v1.0.8.md) | 📋 [Changelog →](./packages/react-native-flipper-inspector/CHANGELOG.md)
-
----
-
-## 🚀 Quick Start
+**Recommended Setup** (Manual Control):
 
 ```typescript
-import { init, log, state, metric, patchNetwork } from 'react-native-flipper-inspector';
+import React, { useEffect } from 'react';
+import { View } from 'react-native';
+import {
+  ReactNativeInspectorOverlay,
+  init,
+  patchNetwork,
+} from 'react-native-flipper-inspector';
 
-// Initialize the inspector
+export default function App() {
+  useEffect(() => {
+    // Initialize inspector
+    init({ enabled: __DEV__ });
+    
+    // Enable network monitoring
+    patchNetwork({ enabled: true });
+  }, []);
+
+  return (
+    <>
+      <View style={{ flex: 1 }}>
+        {/* Your app content */}
+      </View>
+
+      <ReactNativeInspectorOverlay position="bottom-right" size={60} />
+    </>
+  );
+}
+```
+
+That's it! 🎉 The floating inspector will appear on your screen.
+
+## 🎯 How to Use
+
+### Basic Usage
+
+The floating inspector automatically captures all network requests. Just tap the floating button to see:
+
+- **API Calls**: All HTTP requests with status codes and timing
+- **Request Details**: Headers, body, and response data
+- **Search & Filter**: Find specific requests quickly
+- **Export Options**: Copy as cURL, share, or export data
+
+### Customization
+
+```typescript
+import { ReactNativeInspectorOverlay } from 'react-native-flipper-inspector';
+
+<ReactNativeInspectorOverlay
+  position="top-left"   // 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+  size={72}             // Floating button size in pixels
+  color="#6366f1"       // Floating button color
+  enabled={true}        // Enable/disable the inspector
+/>;
+```
+
+> **Note**: The `ReactNativeInspectorOverlay` component includes built-in `StoreProvider` and handles network interception setup automatically.
+
+### Advanced Configuration
+
+```typescript
+import { init, patchNetwork } from 'react-native-flipper-inspector';
+
+// Initialize with custom settings
 init({
+  enabled: __DEV__, // Only in development
   batch: { intervalMs: 500 },
   tags: { app: 'MyApp' },
 });
 
 // Enable network monitoring
-const unpatchNetwork = patchNetwork({
-  redactHeaders: ['authorization'],
+patchNetwork({
+  redactHeaders: ['authorization', 'cookie'],
+  redactBody: false,
 });
-
-// Log events
-log('UserLoggedIn', { userId: '123', plan: 'premium' });
-
-// Track metrics
-metric('api_response_time', 250, { endpoint: '/users' });
-
-// Update state
-state.update('user', { id: '123', name: 'John Doe' });
-state.update('session', { isActive: true });
 ```
 
-## 📖 Documentation
+## 📸 Screenshots
 
-- [**API Reference**](./docs/api-reference.md) - Complete API documentation
-- [**Quick Start Guide**](./docs/quick-start.md) - Get up and running quickly
-- [**Network Monitoring**](./docs/network-monitoring.md) - HTTP request/response capture
-- [**Redux Integration**](./docs/redux-integration.md) - State management tracking
-- [**Performance Tips**](./docs/performance.md) - Optimization guidelines
-- [**Production Hardening**](./docs/production.md) - Production deployment guide
-- [**Troubleshooting**](./docs/troubleshooting.md) - Common issues and solutions
+<div align="center">
+  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/packages/react-native-flipper-inspector/screenshots/api-list.jpeg" width="280" alt="API Inspector List">
+  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/packages/react-native-flipper-inspector/screenshots/api-details.jpeg" width="280" alt="API Call Details">
+</div>
+
+<div align="center">
+  <p><strong>API Call List</strong> | <strong>API Call Details</strong></p>
+</div>
 
 ## 🎯 Example App
 
-The example app demonstrates all features:
+Try the example app to see all features in action:
 
 ```bash
 cd apps/example
@@ -151,107 +148,42 @@ npm install
 npm run android  # or npm run ios
 ```
 
-Open Flipper and look for the "RN Inspector" plugin to see events in real-time!
+The example includes:
+- Network request examples
+- API call demonstrations
+- Floating inspector in action
+- Real-time debugging features
 
-## 📸 Screenshots
 
-Visual showcase of all features in action:
+## 🔧 Configuration Options
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/floating-button.jpeg" width="280" alt="Floating Button">
-  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/api-inspector-list.jpeg" width="280" alt="API Inspector">
-  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/api-details.jpeg" width="280" alt="API Details">
-</div>
-
-<div align="center">
-  <p><strong>Floating Inspector Button</strong> | <strong>API Call List</strong> | <strong>Detailed Request View</strong></p>
-</div>
-
-**Features Shown:**
-- 🔍 Floating inspector button (always accessible)
-- 📊 Complete API call history with status codes
-- 🎨 Beautiful JSON syntax highlighting
-- 📋 Copy as cURL, headers, response body
-- 🔎 Real-time search and filtering
-
-**See more:** [Complete Screenshots Guide](./documentation/screenshots.md)
-
-## 🏗️ Development
-
-### Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/khokanuzzman/react-native-flipper-inspector.git
-cd react-native-flipper-inspector
-
-# Install dependencies
-npm install
-
-# Build all packages
-npm run build
-
-# Run tests
-npm run test
-
-# Lint code
-npm run lint
-```
-
-### Package Scripts
-
-```bash
-# Build specific package
-npm -w packages/react-native-flipper-inspector run build
-npm -w packages/flipper-plugin-rn-inspector run build
-
-# Run example app
-npm -w apps/example start
-npm -w apps/example run android
-npm -w apps/example run ios
-
-# Development mode
-npm -w packages/flipper-plugin-rn-inspector run dev
-```
-
-## 🔧 Configuration
-
-### Inspector Config
+### FloatingInspector Props
 
 ```typescript
-interface InspectorConfig {
-  enabled?: boolean;              // default: true in __DEV__
-  batch?: {
-    intervalMs?: number;          // default: 500
-    maxItems?: number;           // default: 50
-  };
-  tags?: Record<string, string>;  // default tags for every record
-  maxPayloadSize?: number;        // default: 10240 (10KB)
-  networkEnabled?: boolean;       // default: false
-  redactHeaders?: string[];       // headers to redact
-  redactBody?: boolean;          // default: false
+interface FloatingInspectorProps {
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  size?: number;
+  color?: string;
+  enabled?: boolean;
 }
 ```
 
-### Network Monitoring
+### Advanced Settings
 
 ```typescript
-const unpatch = patchNetwork({
-  enabled: true,
-  redactHeaders: ['authorization', 'cookie', 'x-api-key'],
-  redactBody: false,
+import { init, patchNetwork } from 'react-native-flipper-inspector';
+
+// Initialize with custom settings
+init({
+  enabled: __DEV__, // Only in development
+  batch: { intervalMs: 500 },
+  tags: { app: 'MyApp' },
 });
-```
 
-### Redux Integration
-
-```typescript
-import { attachRedux } from 'react-native-flipper-inspector';
-
-const unattach = attachRedux(store, {
-  whitelist: ['user', 'settings'],  // only track these reducers
-  blacklist: ['sensitive'],         // exclude these reducers
-  serialize: (state) => state,      // custom serializer
+// Configure network monitoring
+patchNetwork({
+  redactHeaders: ['authorization', 'cookie'],
+  redactBody: false,
 });
 ```
 
@@ -259,50 +191,21 @@ const unattach = attachRedux(store, {
 
 - **Header Redaction**: Automatically redact sensitive headers
 - **Body Redaction**: Option to redact request/response bodies
-- **Size Limits**: Configurable payload size limits
 - **Production Safety**: Automatically disabled in production builds
-
-## 📊 Performance
-
-- **< 10kb gzipped**: Core library size
-- **Batched Messaging**: Configurable batching to reduce overhead
-- **Tree Shaking**: Unused features automatically excluded
-- **No Runtime Cost**: Zero overhead when Flipper is not available
+- **Zero Runtime Cost**: No overhead when disabled
 
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
 
-### Development Workflow
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-### Code Style
-
-- TypeScript strict mode
-- ESLint + Prettier
-- Conventional commits
-- 95%+ test coverage
-
 ## 📄 License
 
 MIT License - see [LICENSE](./LICENSE) for details.
-
-## 🙏 Acknowledgments
-
-- [Flipper](https://fbflipper.com/) - The debugging platform that makes this possible
-- [React Native](https://reactnative.dev/) - The framework we're built for
-- [Zustand](https://github.com/pmndrs/zustand) - State management for the Flipper plugin
 
 ## 📞 Support
 
 - [GitHub Issues](https://github.com/khokanuzzman/react-native-flipper-inspector/issues)
 - [Discussions](https://github.com/khokanuzzman/react-native-flipper-inspector/discussions)
-- [Documentation](./docs/)
 
 ---
 

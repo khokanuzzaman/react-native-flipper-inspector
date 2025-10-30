@@ -1,19 +1,30 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Inspector } from '../core/inspector';
 
+const mockConnection = {
+  send: vi.fn(),
+  receive: vi.fn(),
+};
+
+const mockAddPlugin = vi.fn((plugin: any) => {
+  if (plugin && typeof plugin.onConnect === 'function') {
+    plugin.onConnect(mockConnection);
+  }
+});
+
 // Mock react-native-flipper
 vi.mock('react-native-flipper', () => ({
-  default: vi.fn().mockImplementation(() => ({
-    addPlugin: vi.fn(),
-    on: vi.fn(),
-    send: vi.fn(),
-  })),
+  addPlugin: mockAddPlugin,
 }));
 
 describe('Inspector', () => {
   let inspector: Inspector;
 
   beforeEach(() => {
+    mockAddPlugin.mockClear();
+    mockConnection.send.mockClear();
+    mockConnection.receive.mockClear();
+
     inspector = new Inspector({
       enabled: true,
       batch: { intervalMs: 0, maxItems: 10 },
@@ -108,11 +119,11 @@ describe('Inspector', () => {
   });
 
   it('should manage state', () => {
-    const logSpy = vi.spyOn(inspector as any, 'sendMessage');
-    
+    const transportSendSpy = vi.spyOn((inspector as any).transport, 'send');
+
     inspector.state.update('test-section', { key1: 'value1' });
     
-    expect(logSpy).toHaveBeenCalledWith(
+    expect(transportSendSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         type: 'state',
         data: expect.objectContaining({
@@ -125,7 +136,7 @@ describe('Inspector', () => {
 
     inspector.state.update('test-section', { key2: 'value2' });
     
-    expect(logSpy).toHaveBeenCalledWith(
+    expect(transportSendSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         type: 'state',
         data: expect.objectContaining({

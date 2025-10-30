@@ -203,7 +203,7 @@ export class Inspector {
    * Merge user config with defaults
    */
   private mergeConfig(config: InspectorConfig): Required<InspectorConfig> {
-    const isDev = typeof __DEV__ !== 'undefined' ? __DEV__ : false;
+    const isDev = typeof __DEV__ !== 'undefined' ? __DEV__ : true;
 
     return {
       enabled: config.enabled ?? isDev,

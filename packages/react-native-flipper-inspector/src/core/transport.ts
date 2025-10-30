@@ -18,59 +18,57 @@ export class NoopTransport implements Transport {
  * Flipper transport that sends messages to the Flipper desktop app
  */
 export class FlipperTransport implements Transport {
-  private flipperClient: any;
+  private connection: {
+    send(method: string, data: any): void;
+  } | null = null;
   private connected: boolean = false;
 
   constructor() {
-    this.initializeFlipper();
+    void this.initializeFlipper();
   }
 
   private async initializeFlipper(): Promise<void> {
     try {
       // Dynamic import to avoid bundling react-native-flipper when not available
-      const FlipperClient = await import('react-native-flipper').then(
-        (module) => module.default || module
-      );
+      const module = await import('react-native-flipper');
+      const addPlugin =
+        (module as any)?.addPlugin ?? (module as any)?.default?.addPlugin;
 
-      this.flipperClient = new (FlipperClient as any)('react-native-flipper-inspector');
-      
-      this.flipperClient.addPlugin({
+      if (typeof addPlugin !== 'function') {
+        this.connected = false;
+        return;
+      }
+
+      addPlugin({
         getId() {
           return 'react-native-flipper-inspector';
         },
-        onConnect() {
+        onConnect: (connection: { send(method: string, data: any): void }) => {
+          this.connection = connection;
           this.connected = true;
         },
-        onDisconnect() {
+        onDisconnect: () => {
           this.connected = false;
+          this.connection = null;
         },
         runInBackground() {
           return true;
         },
       });
-
-      // Handle connection state
-      this.flipperClient.on('connected', () => {
-        this.connected = true;
-      });
-
-      this.flipperClient.on('disconnected', () => {
-        this.connected = false;
-      });
-
     } catch (error) {
       // Flipper not available, stay disconnected
       this.connected = false;
+      this.connection = null;
     }
   }
 
   send(message: InspectorMessage): void {
-    if (!this.connected || !this.flipperClient) {
+    if (!this.connected || !this.connection) {
       return;
     }
 
     try {
-      this.flipperClient.send('react-native-flipper-inspector', message);
+      this.connection.send('message', message);
     } catch (error) {
       // Silently handle transport errors
       console.warn('Flipper transport error:', error);
@@ -78,7 +76,7 @@ export class FlipperTransport implements Transport {
   }
 
   isConnected(): boolean {
-    return this.connected && !!this.flipperClient;
+    return this.connected && !!this.connection;
   }
 }
 

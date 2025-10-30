@@ -1,15 +1,19 @@
-import React from 'react';
-import { useFlipperInspector, ReactNativeInspectorOverlay, StoreProvider } from 'react-native-flipper-inspector';
-import AxiosTest from './AxiosTest';
+import React, { useEffect } from 'react';
+import { ReactNativeInspectorOverlay, init, patchNetwork } from 'react-native-flipper-inspector';
+import AppModern from './src/AppModern';
 
-export default function App() {
-  // ONE LINE SETUP! 🚀
-  useFlipperInspector();
+const App = (): React.JSX.Element => {
+  useEffect(() => {
+    init({ enabled: __DEV__ });
+    patchNetwork({ enabled: true });
+  }, []);
 
   return (
-    <StoreProvider>
-      <AxiosTest />
-      <ReactNativeInspectorOverlay />
-    </StoreProvider>
+    <>
+      <AppModern />
+      <ReactNativeInspectorOverlay position="bottom-right" size={60} />
+    </>
   );
-}
+};
+
+export default App;

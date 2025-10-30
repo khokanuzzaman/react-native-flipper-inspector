@@ -2,16 +2,54 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { patchNetwork } from '../integrations/network';
 import { attachRedux as attachReduxIntegration } from '../integrations/redux';
 
-// Mock global fetch and XMLHttpRequest
+// Mock global fetch
 const mockFetch = vi.fn();
-const mockXMLHttpRequest = vi.fn();
+global.fetch = mockFetch as any;
 
-global.fetch = mockFetch;
-global.XMLHttpRequest = mockXMLHttpRequest as any;
+class MockXMLHttpRequest {
+  public status = 200;
+  public responseText = '{"data": "test"}';
+  private listeners: Record<string, Array<() => void>> = {};
+
+  public openMock = vi.fn();
+  public sendMock = vi.fn();
+  public addEventListenerMock = vi.fn();
+
+  constructor() {
+    // no-op constructor
+  }
+
+  open(method: string, url: string) {
+    this.openMock(method, url);
+  }
+
+  send(body?: Document | XMLHttpRequestBodyInit | null) {
+    this.sendMock(body);
+  }
+
+  addEventListener(event: string, handler: () => void) {
+    this.addEventListenerMock(event, handler);
+    if (!this.listeners[event]) {
+      this.listeners[event] = [];
+    }
+    this.listeners[event].push(handler);
+  }
+
+  getAllResponseHeaders() {
+    return 'content-type: application/json\r\n';
+  }
+
+  trigger(event: string) {
+    this.listeners[event]?.forEach((handler) => handler.call(this));
+  }
+}
+
+global.XMLHttpRequest = MockXMLHttpRequest as any;
 
 describe('Network Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockFetch.mockReset();
   });
 
   it('should patch fetch requests', async () => {
@@ -59,49 +97,29 @@ describe('Network Integration', () => {
   });
 
   it('should patch XMLHttpRequest', () => {
-    const mockXHR = {
-      open: vi.fn(),
-      send: vi.fn(),
-      addEventListener: vi.fn(),
-      getAllResponseHeaders: () => 'content-type: application/json\r\n',
-      responseText: '{"data": "test"}',
-      status: 200,
-    };
-
-    mockXMLHttpRequest.mockReturnValue(mockXHR);
-
     const unpatch = patchNetwork({ enabled: true });
 
-    const xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest() as MockXMLHttpRequest;
     xhr.open('GET', 'https://api.example.com/test');
     xhr.send();
 
-    expect(mockXHR.open).toHaveBeenCalledWith('GET', 'https://api.example.com/test');
-    expect(mockXHR.send).toHaveBeenCalled();
+    expect(xhr.openMock).toHaveBeenCalledWith('GET', 'https://api.example.com/test');
+    expect(xhr.sendMock).toHaveBeenCalled();
 
     unpatch();
   });
 
   it('should handle XMLHttpRequest errors', () => {
-    const mockXHR = {
-      open: vi.fn(),
-      send: vi.fn(),
-      addEventListener: vi.fn((event, callback) => {
-        if (event === 'error') {
-          setTimeout(() => callback(), 0);
-        }
-      }),
-    };
-
-    mockXMLHttpRequest.mockReturnValue(mockXHR);
-
     const unpatch = patchNetwork({ enabled: true });
 
-    const xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest() as MockXMLHttpRequest;
     xhr.open('GET', 'https://api.example.com/error');
     xhr.send();
 
-    expect(mockXHR.addEventListener).toHaveBeenCalledWith('error', expect.any(Function));
+    expect(xhr.addEventListenerMock).toHaveBeenCalledWith('error', expect.any(Function));
+
+    // Simulate error event
+    xhr.trigger('error');
 
     unpatch();
   });

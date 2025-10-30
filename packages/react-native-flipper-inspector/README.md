@@ -9,9 +9,9 @@
 
 A production-ready React Native debugging toolkit with professional API monitoring overlay, designed for seamless integration with Flipper. Monitor network requests, inspect API calls, track state changes, and debug with ease.
 
-**Latest Version**: `v1.0.14` | **Status**: ✅ Production Ready | **[What's New →](#-whats-new-in-1014)**
+**Latest Version**: `v1.0.16` | **Status**: ✅ Production Ready
 
-> **🎉 v1.0.14 Released!** PERFECT FIX with Unified Interceptor Registry! Complete Axios/XHR support, no conflicts, no stack overflow, 100% feature complete! 🚀
+> **🎉 v1.0.16 Released!** Fixed package building, minification issues, and improved compatibility. Clean example app with working setup. 🚀
 
 ## ✨ Key Features
 
@@ -44,13 +44,12 @@ A production-ready React Native debugging toolkit with professional API monitori
 ### API Inspector in Action
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/floating-button.jpeg" width="280" alt="Floating Button">
-  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/api-inspector-list.jpeg" width="280" alt="API Inspector">
-  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/screenshots/api-details.jpeg" width="280" alt="API Details">
+  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/packages/react-native-flipper-inspector/screenshots/api-list.jpeg" width="280" alt="API List">
+  <img src="https://raw.githubusercontent.com/khokanuzzman/react-native-flipper-inspector/main/packages/react-native-flipper-inspector/screenshots/api-details.jpeg" width="280" alt="API Details">
 </div>
 
 <div align="center">
-  <p><strong>Draggable Floating Button</strong> | <strong>API Call List</strong> | <strong>Request Details</strong></p>
+  <p><strong>API Call List</strong> | <strong>API Call Details</strong></p>
 </div>
 
 **What You See:**
@@ -60,47 +59,27 @@ A production-ready React Native debugging toolkit with professional API monitori
 - 🎨 Beautiful JSON syntax highlighting
 - 📋 Copy as cURL, headers, response body
 
-See all screenshots: [Complete Screenshots Guide](../../documentation/screenshots.md)
+## 🆕 What's New in 1.0.16
 
-## 🆕 What's New in 1.0.14
+### Fixes and Improvements - October 30, 2025
 
-### 🎯 PERFECT FIX: Unified Interceptor Registry - October 21, 2025
+**What's Fixed:**
+- ✅ **Package Building** - Fixed `npm pack` deleting dist folder issue
+- ✅ **Minification** - Disabled to prevent export issues  
+- ✅ **Deprecated API** - Fixed SafeAreaView deprecation in example app
+- ✅ **Build Configuration** - Improved tsup compatibility
 
-**THE COMPLETE SOLUTION:** No conflicts, no crashes, 100% feature complete!
-
-**What's New:**
-- 🏗️ **Unified Interceptor Registry** - Central coordination system for all network patching
-- 🎯 **Complete Axios/XHR Support** - Works perfectly in overlay without conflicts
-- ✅ **No Stack Overflow** - Fixed infinite recursion issue from v1.0.12
-- 🤝 **Perfect Coordination** - Overlay and Flipper work together seamlessly
-- 📊 **Zero Limitations** - All features working, no compromises
-
-**The Architecture:**
-- Single patch point for fetch and XHR
-- Multiple systems register callbacks
-- All callbacks notified of network events
-- No conflicts, no recursion, no crashes
-
-**What Works:**
-- ✅ **Axios in Overlay** (RESTORED!)
-- ✅ **XHR in Overlay** (RESTORED!)
-- ✅ **Fetch in Overlay** (Still working)
-- ✅ **Flipper Desktop** (Still working)
-- ✅ **All HTTP Libraries** (98% coverage)
-
-**Why v1.0.14 is Perfect:**
-- v1.0.12: Had features but crashed ❌
-- v1.0.13: Fixed crash but limited features ⚠️
-- v1.0.14: All features + no crashes ✅ **PERFECT!**
+**What Changed:**
+- 🔧 Better build and pack process
+- 📦 Optimized package scripts
+- 🎨 Updated example app to modern patterns
 
 **Upgrade:**
 ```bash
-npm install react-native-flipper-inspector@1.0.14
+npm install react-native-flipper-inspector@1.0.16
 ```
 
-**Result:** Complete feature set with proper architecture! 🎉
-
-📖 [Perfect Fix Details](../../PERFECT_FIX_v1.0.14.md) | 📖 [Third-Party Library Support](../../THIRD_PARTY_LIBRARY_SUPPORT.md) | 📋 [Changelog](./CHANGELOG.md)
+📋 [Changelog](./CHANGELOG.md)
 
 ---
 
@@ -123,58 +102,45 @@ npm install react-native-flipper
 
 ## 🚀 Quick Start
 
-### ⭐ Option 1: Ultra-Simple Setup (Recommended)
+### ⭐ Recommended Setup (Manual Control)
 
-Use the new `FlipperInspectorProvider` component for zero-config setup:
+For best reliability and explicit control:
 
 ```typescript
-import { FlipperInspectorProvider } from 'react-native-flipper-inspector';
+import React, { useEffect } from 'react';
+import { ReactNativeInspectorOverlay, init, patchNetwork } from 'react-native-flipper-inspector';
 
 export default function App() {
+  useEffect(() => {
+    // Initialize inspector
+    init({ enabled: __DEV__ });
+    
+    // Enable network monitoring
+    patchNetwork({ enabled: true });
+  }, []);
+
   return (
-    <FlipperInspectorProvider>
-      <YourAppContent />
-    </FlipperInspectorProvider>
+    <>
+      {/* Your app content */}
+      <ReactNativeInspectorOverlay position="bottom-right" size={60} />
+    </>
   );
 }
 ```
 
-**That's it!** Everything is automatically initialized and enabled in dev builds.
+**That's it!** The floating inspector will appear with network monitoring enabled.
 
-### 🪝 Option 2: Hook-Based Setup
-
-Use the `useFlipperInspector` hook for simple functional component setup:
+### 🎨 Customization
 
 ```typescript
-import { useFlipperInspector } from 'react-native-flipper-inspector';
+import { ReactNativeInspectorOverlay } from 'react-native-flipper-inspector';
 
-export default function App() {
-  useFlipperInspector(); // Auto-initializes in dev builds
-
-  return <YourAppContent />;
-}
-```
-
-### ⚙️ Option 3: Manual Setup (Full Control)
-
-For complete customization:
-
-```typescript
-import { init, patchNetwork } from 'react-native-flipper-inspector';
-
-// Initialize with custom config
-init({
-  enabled: __DEV__, // Auto-disabled in production
-  batch: {
-    intervalMs: 1000,
-    maxItems: 50,
-  },
-});
-
-// Patch network to intercept API calls
-patchNetwork();
-
-// Your app code here
+<ReactNativeInspectorOverlay
+  position="top-left"   // 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+  size={72}             // Floating button size in pixels
+  color="#6366f1"       // Floating button color
+  enabled={true}        // Enable/disable the inspector
+/>;
 ```
 
 ## 🎯 Core API Usage
@@ -317,17 +283,12 @@ init({
 
 ## 📚 Documentation
 
-Complete documentation included in package:
+Complete documentation included:
+- **README**: This file with installation and usage
+- **CHANGELOG**: Version history and changes
+- **Example App**: Working demo in `apps/example`
 
-- **Quick Start Guide**: Get started in 5 minutes
-- **API Reference**: Complete API documentation
-- **Configuration Guide**: Configure for your needs
-- **Android/iOS Setup**: Platform-specific setup guides
-- **Network Monitoring**: Advanced network debugging
-- **Troubleshooting**: Solutions to common issues
-- **Screenshots Guide**: Visual guide to all features
-
-View on [GitHub](https://github.com/khokanuzzman/react-native-flipper-inspector/tree/main/documentation)
+View on [GitHub](https://github.com/khokanuzzman/react-native-flipper-inspector)
 
 ## 🧪 Testing
 
@@ -361,22 +322,22 @@ npm run dev
 
 ## 📊 Package Contents
 
-**v1.0.6** includes:
+**v1.0.16** includes:
 
 - ✅ TypeScript source code with full type safety
 - ✅ CommonJS (CJS) distribution
 - ✅ ES Module (ESM) distribution
 - ✅ TypeScript declarations (.d.ts)
 - ✅ Source maps for debugging
-- ✅ Android native module (Java)
-- ✅ iOS native module (Objective-C)
-- ✅ 4 Beautiful screenshots
-- ✅ 8 Complete documentation guides
+- ✅ Android native module
+- ✅ iOS native module
+- ✅ Screenshots
 - ✅ README, LICENSE, CHANGELOG
+- ✅ Working example app
 
 **Package Size**:
-- Tarball: 296.2 KB
-- Unpacked: 686.3 KB
+- Tarball: ~440 KB
+- Unpacked: ~1.3 MB
 
 ## 🗺️ Roadmap
 
@@ -396,7 +357,6 @@ We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING
 
 - **Issues**: [Report bugs](https://github.com/khokanuzzman/react-native-flipper-inspector/issues)
 - **Discussions**: [Ask questions](https://github.com/khokanuzzman/react-native-flipper-inspector/discussions)
-- **GitHub**: [View source](https://github.com/khokanuzzman/react-native-flipper-inspector)
 
 ## 📄 License
 
@@ -404,21 +364,15 @@ MIT License - See [LICENSE](../../LICENSE) file for details
 
 ## 🆘 Support
 
-- **📚 Documentation**: Complete guides in the `documentation/` folder
 - **🐛 Issues**: [GitHub Issues](https://github.com/khokanuzzman/react-native-flipper-inspector/issues)
 - **💬 Discussions**: [GitHub Discussions](https://github.com/khokanuzzman/react-native-flipper-inspector/discussions)
-- **📖 Wiki**: [GitHub Wiki](https://github.com/khokanuzzman/react-native-flipper-inspector/wiki)
 
 ## 🌟 Version History
 
-- **v1.0.9**: 🚀 Android SDK 36 support + namespace declaration (Oct 2025)
-- **v1.0.8**: 🐛 Critical bug fix for "method" property error (Oct 2025)
-- **v1.0.6**: Screenshots properly included in NPM package
-- **v1.0.5**: Screenshots & documentation added to package
-- **v1.0.4**: Complete documentation & example app
-- **v1.0.3**: Draggable floating button & sticky search
-- **v1.0.2**: JSON syntax highlighting & improvements
-- **v1.0.1**: Bug fixes & stability improvements
+- **v1.0.16**: ✅ Fixed package building, minification, and compatibility (Oct 2025)
+- **v1.0.14**: 🎯 Unified Interceptor Registry - Complete Axios/XHR support
+- **v1.0.13**: 🐛 Fixed stack overflow issue
+- **v1.0.12**: 🚀 Added XMLHttpRequest/Axios support
 - **v1.0.0**: Initial release with core features
 
 ## 🙏 Acknowledgments

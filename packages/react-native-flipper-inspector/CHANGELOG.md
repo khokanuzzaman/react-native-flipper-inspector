@@ -5,23 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.15] - 2025-10-21
+## [1.0.16] - 2025-10-30
 
 ### Fixed
-- Overlay not showing network calls due to race condition
-- StoreProvider now properly initializes before network interception starts
-- Fixed timing issue between globalAddApiCall setup and network interception
-- Added proper debugging logs for troubleshooting
+- Same fixes as v1.0.15 (package building, minification, SafeAreaView deprecation)
+
+## [1.0.15] - 2025-10-30 (Skipped - published internally)
+
+### Fixed
+- ✅ **Package Building**: Fixed `npm pack` deleting dist folder issue
+  - Removed `postpack` script that was cleaning dist after packing
+  - Package now properly includes all built files in .tgz
+  
+- ✅ **Minification**: Disabled minification to prevent export issues
+  - Set `minify: false` in tsup.config.ts
+  - Fixed "Cannot read property 'FlipperInspectorProvider' of undefined" error
+  - All exports now properly accessible
+  
+- ✅ **Deprecated SafeAreaView**: Fixed deprecation warning in example app
+  - Changed from `react-native` SafeAreaView to `react-native-safe-area-context`
+  - Example app now uses modern API
 
 ### Changed
-- StoreProvider now accepts `enabled` prop and manages network interception lifecycle
-- Moved network interception start from overlay component to StoreProvider
-- Added comprehensive logging for debugging network call flow
+- 🔧 **Build Configuration**: Improved tsup configuration for better compatibility
+- 📦 **Package Scripts**: Optimized build and pack process
+- 🎨 **Example App**: Updated to use latest React Native patterns
 
 ### Technical Details
-- Fixed race condition where startNetworkInterception() was called before setGlobalAddApiCall()
-- StoreProvider now handles both global function setup and network interception start
-- Added debug logs to track network call flow from registry to overlay
+- Files modified:
+  - `package.json` - Removed postpack script
+  - `tsup.config.ts` - Disabled minification
+  - Example app - Updated SafeAreaView import
+  
+### Important Notes
+- **Package must be built before packing**: Run `npm run build` before `npm pack`
+- **Use .tgz for local development**: Install from `.tgz` file for testing
+- **Minification disabled**: Slightly larger bundle but more reliable exports
 
 ## [1.0.14] - 2024-10-21
 

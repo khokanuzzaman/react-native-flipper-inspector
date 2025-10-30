@@ -22,41 +22,100 @@ export function safeStringify(
   options: SerializeOptions = {}
 ): string {
   const opts = { ...DEFAULT_OPTIONS, ...options };
-  const seen = new WeakSet();
-  let size = 0;
+  const seenStack: any[] = [];
 
-  const replacer = (key: string, value: any, depth = 0): any => {
-    // Check depth limit
+  const sanitize = (value: any, depth: number): any => {
     if (depth > opts.maxDepth) {
       return '[Max Depth Reached]';
     }
 
-    // Check size limit (rough estimation)
-    const stringified = JSON.stringify(value);
-    if (size + stringified.length > opts.maxSize) {
-      return '[Size Limit Reached]';
+    if (value === null) {
+      return null;
     }
 
-    // Handle cycles
-    if (typeof value === 'object' && value !== null) {
-      if (seen.has(value)) {
+    const valueType = typeof value;
+
+    if (valueType === 'object') {
+      if (seenStack.includes(value)) {
         return '[Circular Reference]';
       }
-      seen.add(value);
+
+      seenStack.push(value);
+
+      try {
+        if (Array.isArray(value)) {
+          const result = value.map((item) => {
+            try {
+              const sanitizedItem = sanitize(item, depth + 1);
+              return sanitizedItem === undefined ? null : sanitizedItem;
+            } catch (error) {
+              return `[Serialization Error: ${
+                error instanceof Error ? error.message : 'Unknown error'
+              }]`;
+            }
+          });
+
+          seenStack.pop();
+          return result;
+        }
+
+        const result: Record<string, any> = {};
+
+        for (const key of Object.keys(value)) {
+          let propertyValue: any;
+          try {
+            propertyValue = (value as any)[key];
+          } catch (error) {
+            result[key] = `[Serialization Error: ${
+              error instanceof Error ? error.message : 'Unknown error'
+            }]`;
+            continue;
+          }
+
+          try {
+            const sanitizedValue = sanitize(propertyValue, depth + 1);
+            if (sanitizedValue !== undefined) {
+              result[key] = sanitizedValue;
+            }
+          } catch (error) {
+            result[key] = `[Serialization Error: ${
+              error instanceof Error ? error.message : 'Unknown error'
+            }]`;
+          }
+        }
+
+        seenStack.pop();
+        return result;
+      } catch (error) {
+        seenStack.pop();
+        return `[Serialization Error: ${error instanceof Error ? error.message : 'Unknown error'}]`;
+      }
     }
 
-    // Apply custom replacer
-    const result = opts.replacer(key, value);
+    if (valueType === 'function' || valueType === 'symbol') {
+      return undefined;
+    }
 
-    // Update size counter
-    size += JSON.stringify(result).length;
+    if (valueType === 'undefined') {
+      return undefined;
+    }
 
-    return result;
+    return value;
   };
 
   try {
-    const result = JSON.stringify(obj, (key, value) => replacer(key, value, 0));
-    return result;
+    const sanitized = sanitize(obj, 0);
+    const serialized = JSON.stringify(sanitized, opts.replacer);
+
+    if (typeof serialized !== 'string') {
+      return 'undefined';
+    }
+
+    if (serialized.length > opts.maxSize) {
+      return '[Size Limit Reached]';
+    }
+
+    return serialized;
   } catch (error) {
     return `[Serialization Error: ${error instanceof Error ? error.message : 'Unknown error'}]`;
   }
